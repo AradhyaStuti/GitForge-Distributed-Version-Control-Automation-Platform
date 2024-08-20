@@ -1,0 +1,31 @@
+.admin-page { max-width: 1000px; margin: 0 auto; padding: var(--space-lg); }
+.admin-page h1 { font-size: 1.3rem; font-weight: 700; }
+.admin-subtitle { font-size: 0.84rem; color: var(--color-text-secondary); margin: 4px 0 20px; }
+
+.admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.admin-stat { padding: 16px; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); transition: all 0.2s; }
+.admin-stat:hover { border-color: var(--color-accent-brand); transform: translateY(-1px); }
+.admin-stat-num { font-size: 1.5rem; font-weight: 700; color: var(--color-text-primary); display: block; line-height: 1; }
+.admin-stat-label { font-size: 0.65rem; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; display: block; }
+
+.admin-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.admin-card { background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 18px; }
+.admin-card h3 { font-size: 0.82rem; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.4px; }
+
+.admin-week-stats { display: flex; gap: 16px; }
+.admin-week-item { display: flex; flex-direction: column; gap: 2px; }
+.admin-week-num { font-size: 1.1rem; font-weight: 700; color: var(--color-accent-green); }
+.admin-week-item > span:last-child { font-size: 0.7rem; color: var(--color-text-secondary); }
+
+.admin-sys-list { display: flex; flex-direction: column; gap: 8px; }
+.admin-sys-row { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.admin-sys-row span:first-child { color: var(--color-text-secondary); }
+.admin-sys-row span:last-child { color: var(--color-text-primary); font-family: "SF Mono", monospace; font-size: 0.74rem; }
+
+.admin-recent-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.admin-recent-list li { display: flex; align-items: center; gap: 10px; font-size: 0.78rem; padding: 6px 0; border-bottom: 1px solid var(--color-border); }
+.admin-recent-list li:last-child { border-bottom: none; }
+.admin-recent-list strong { color: var(--color-text-primary); font-weight: 600; }
+.admin-recent-list span { color: var(--color-text-secondary); font-size: 0.72rem; }
+
+@media screen and (max-width: 700px) { .admin-grid { grid-template-columns: 1fr; } .admin-stats { grid-template-columns: repeat(2, 1fr); } }

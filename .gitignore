@@ -1,0 +1,14 @@
+# GitForge internals — don't track in real Git
+.gitforge/
+
+# Node
+node_modules/
+package-lock.json
+
+# Environment
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
