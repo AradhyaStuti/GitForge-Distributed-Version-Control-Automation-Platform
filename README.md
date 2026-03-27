@@ -11,7 +11,6 @@
   <img src="https://img.shields.io/badge/react-18-7c3aed?style=flat-square&logo=react&logoColor=white"/>
   <img src="https://img.shields.io/badge/mongodb-atlas-7c3aed?style=flat-square&logo=mongodb&logoColor=white"/>
   <img src="https://img.shields.io/badge/docker-ready-7c3aed?style=flat-square&logo=docker&logoColor=white"/>
-  <img src="https://img.shields.io/badge/license-MIT-7c3aed?style=flat-square"/>
 </p>
 
 ---
@@ -171,8 +170,3 @@ frontend-main/src/
 - CORS whitelist (configurable, all localhost in dev)
 - Webhook payloads signed with HMAC-SHA256
 
----
-
-## License
-
-MIT
