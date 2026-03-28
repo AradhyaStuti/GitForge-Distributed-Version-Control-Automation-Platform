@@ -45,6 +45,13 @@
 }
 .navbar-search-input::placeholder { color: var(--color-text-tertiary); }
 
+.navbar-nav-link {
+  font-size: 0.8rem; font-weight: 500; color: var(--color-text-secondary);
+  text-decoration: none; padding: 4px 8px; border-radius: var(--radius-sm);
+  transition: all 0.15s;
+}
+.navbar-nav-link:hover { color: var(--color-text-primary); background: var(--color-bg-tertiary); text-decoration: none; }
+
 .navbar-btn-new {
   display: flex; align-items: center; gap: 4px;
   padding: 5px 12px; font-size: 0.76rem; font-weight: 600;

@@ -9,6 +9,11 @@ const config     = require("./config/env");
 const mainRouter = require("./routes/main.router");
 const { errorHandler }   = require("./middleware/errorHandler");
 const { globalLimiter }  = require("./middleware/rateLimiter");
+const requestTracing     = require("./middleware/requestTracing");
+const { securityMiddleware } = require("./middleware/security");
+const compressionMiddleware  = require("./middleware/compression");
+const { metricsMiddleware, metricsEndpoint } = require("./config/metrics");
+const { executeQuery }   = require("./config/graphql");
 
 const yargs      = require("yargs");
 const { hideBin } = require("yargs/helpers");
@@ -260,9 +265,19 @@ function startServer() {
   const app  = express();
   const port = config.port;
 
+  // ── Request Tracing ────────────────────────────────────────────────────────
+  app.use(requestTracing);
+
   // ── Security ────────────────────────────────────────────────────────────────
   app.use(helmet());
   app.use(globalLimiter);
+  app.use(...securityMiddleware);
+
+  // ── Compression ───────────────────────────────────────────────────────────
+  app.use(compressionMiddleware);
+
+  // ── Metrics ───────────────────────────────────────────────────────────────
+  app.use(metricsMiddleware);
 
   // ── Parsing ─────────────────────────────────────────────────────────────────
   app.use(express.json({ limit: "10mb" }));
@@ -291,6 +306,20 @@ function startServer() {
   } else {
     app.use(requestLogger);
   }
+
+  // ── Metrics Endpoint ────────────────────────────────────────────────────────
+  app.get("/metrics", metricsEndpoint);
+
+  // ── GraphQL Endpoint ──────────────────────────────────────────────────────
+  app.post("/graphql", express.json(), async (req, res) => {
+    try {
+      const { query, variables } = req.body;
+      const result = await executeQuery(query, variables);
+      res.json({ data: result });
+    } catch (err) {
+      res.status(400).json({ errors: [{ message: err.message }] });
+    }
+  });
 
   // ── Routes (versioned) ────────────────────────────────────────────────────
   app.use("/api/v1", mainRouter);
@@ -331,9 +360,28 @@ function startServer() {
     });
   });
 
+  // ── Graceful Shutdown ──────────────────────────────────────────────────────
+  const gracefulShutdown = (signal) => {
+    console.log(`\n${signal} received. Shutting down gracefully...`);
+    httpServer.close(() => {
+      console.log("HTTP server closed.");
+      mongoose.connection.close(false).then(() => {
+        console.log("MongoDB connection closed.");
+        process.exit(0);
+      });
+    });
+    setTimeout(() => { console.error("Forced shutdown."); process.exit(1); }, 10000);
+  };
+
+  process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+  process.on("SIGINT",  () => gracefulShutdown("SIGINT"));
+
   httpServer.listen(port, () => {
     console.log(`GitForge API running on http://localhost:${port}`);
     console.log(`Environment: ${config.nodeEnv}`);
+    console.log(`GraphQL:     http://localhost:${port}/graphql`);
+    console.log(`Metrics:     http://localhost:${port}/metrics`);
+    console.log(`API Docs:    http://localhost:${port}/api/v1/docs`);
   });
 }
 

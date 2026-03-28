@@ -56,6 +56,9 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-right">
+          <Link to="/explore" className="navbar-nav-link">Explore</Link>
+          <Link to="/trending" className="navbar-nav-link">Trending</Link>
+
           <Link to="/create" className="navbar-btn-new">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M7.75 2a.75.75 0 0 1 .75.75V7h4.25a.75.75 0 0 1 0 1.5H8.5v4.25a.75.75 0 0 1-1.5 0V8.5H2.75a.75.75 0 0 1 0-1.5H7V2.75A.75.75 0 0 1 7.75 2Z" /></svg>
             New
@@ -89,8 +92,11 @@ const Navbar = () => {
                 <Link to="/snippets" className="navbar-dropdown-item" onClick={() => setMenuOpen(false)}>Your snippets</Link>
                 <Link to="/bookmarks" className="navbar-dropdown-item" onClick={() => setMenuOpen(false)}>Bookmarks</Link>
                 <Link to="/explore" className="navbar-dropdown-item" onClick={() => setMenuOpen(false)}>Explore</Link>
+                <Link to="/trending" className="navbar-dropdown-item" onClick={() => setMenuOpen(false)}>Trending</Link>
                 <div className="navbar-dropdown-divider" />
                 <Link to="/settings" className="navbar-dropdown-item" onClick={() => setMenuOpen(false)}>Settings</Link>
+                <Link to="/settings/api-keys" className="navbar-dropdown-item" onClick={() => setMenuOpen(false)}>API Keys</Link>
+                <Link to="/settings/security-log" className="navbar-dropdown-item" onClick={() => setMenuOpen(false)}>Security Log</Link>
                 <div className="navbar-dropdown-divider" />
                 <button className="navbar-dropdown-item navbar-dropdown-logout" onClick={() => { setMenuOpen(false); logout(); }}>Sign out</button>
               </div>

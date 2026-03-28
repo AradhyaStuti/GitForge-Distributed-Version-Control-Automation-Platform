@@ -1,73 +1,131 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#0a0a0f"/>
+      <stop offset="50%" style="stop-color:#12121f"/>
       <stop offset="100%" style="stop-color:#1a1a2e"/>
     </linearGradient>
     <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:#7c3aed"/>
-      <stop offset="100%" style="stop-color:#a78bfa"/>
+      <stop offset="50%" style="stop-color:#a78bfa"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
     </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:0"/>
+    </linearGradient>
+    <filter id="blur1" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
   </defs>
 
   <!-- Background -->
-  <rect width="1200" height="300" fill="url(#bg)"/>
+  <rect width="1200" height="340" fill="url(#bg)"/>
 
   <!-- Decorative grid dots -->
-  <g opacity="0.08" fill="white">
-    <circle cx="50" cy="50" r="1.5"/><circle cx="90" cy="50" r="1.5"/><circle cx="130" cy="50" r="1.5"/><circle cx="170" cy="50" r="1.5"/><circle cx="210" cy="50" r="1.5"/>
-    <circle cx="50" cy="90" r="1.5"/><circle cx="90" cy="90" r="1.5"/><circle cx="130" cy="90" r="1.5"/><circle cx="170" cy="90" r="1.5"/><circle cx="210" cy="90" r="1.5"/>
-    <circle cx="50" cy="130" r="1.5"/><circle cx="90" cy="130" r="1.5"/><circle cx="130" cy="130" r="1.5"/><circle cx="170" cy="130" r="1.5"/><circle cx="210" cy="130" r="1.5"/>
-    <circle cx="50" cy="170" r="1.5"/><circle cx="90" cy="170" r="1.5"/><circle cx="130" cy="170" r="1.5"/><circle cx="170" cy="170" r="1.5"/><circle cx="210" cy="170" r="1.5"/>
-    <circle cx="50" cy="210" r="1.5"/><circle cx="90" cy="210" r="1.5"/><circle cx="130" cy="210" r="1.5"/><circle cx="170" cy="210" r="1.5"/><circle cx="210" cy="210" r="1.5"/>
-    <circle cx="50" cy="250" r="1.5"/><circle cx="90" cy="250" r="1.5"/><circle cx="130" cy="250" r="1.5"/><circle cx="170" cy="250" r="1.5"/><circle cx="210" cy="250" r="1.5"/>
-    <circle cx="990" cy="50" r="1.5"/><circle cx="1030" cy="50" r="1.5"/><circle cx="1070" cy="50" r="1.5"/><circle cx="1110" cy="50" r="1.5"/><circle cx="1150" cy="50" r="1.5"/>
-    <circle cx="990" cy="90" r="1.5"/><circle cx="1030" cy="90" r="1.5"/><circle cx="1070" cy="90" r="1.5"/><circle cx="1110" cy="90" r="1.5"/><circle cx="1150" cy="90" r="1.5"/>
-    <circle cx="990" cy="130" r="1.5"/><circle cx="1030" cy="130" r="1.5"/><circle cx="1070" cy="130" r="1.5"/><circle cx="1110" cy="130" r="1.5"/><circle cx="1150" cy="130" r="1.5"/>
-    <circle cx="990" cy="170" r="1.5"/><circle cx="1030" cy="170" r="1.5"/><circle cx="1070" cy="170" r="1.5"/><circle cx="1110" cy="170" r="1.5"/><circle cx="1150" cy="170" r="1.5"/>
-    <circle cx="990" cy="210" r="1.5"/><circle cx="1030" cy="210" r="1.5"/><circle cx="1070" cy="210" r="1.5"/><circle cx="1110" cy="210" r="1.5"/><circle cx="1150" cy="210" r="1.5"/>
-    <circle cx="990" cy="250" r="1.5"/><circle cx="1030" cy="250" r="1.5"/><circle cx="1070" cy="250" r="1.5"/><circle cx="1110" cy="250" r="1.5"/><circle cx="1150" cy="250" r="1.5"/>
+  <g opacity="0.06" fill="white">
+    <circle cx="50" cy="50" r="1.2"/><circle cx="90" cy="50" r="1.2"/><circle cx="130" cy="50" r="1.2"/><circle cx="170" cy="50" r="1.2"/><circle cx="210" cy="50" r="1.2"/><circle cx="250" cy="50" r="1.2"/>
+    <circle cx="50" cy="90" r="1.2"/><circle cx="90" cy="90" r="1.2"/><circle cx="130" cy="90" r="1.2"/><circle cx="170" cy="90" r="1.2"/><circle cx="210" cy="90" r="1.2"/><circle cx="250" cy="90" r="1.2"/>
+    <circle cx="50" cy="130" r="1.2"/><circle cx="90" cy="130" r="1.2"/><circle cx="130" cy="130" r="1.2"/><circle cx="170" cy="130" r="1.2"/><circle cx="210" cy="130" r="1.2"/><circle cx="250" cy="130" r="1.2"/>
+    <circle cx="50" cy="170" r="1.2"/><circle cx="90" cy="170" r="1.2"/><circle cx="130" cy="170" r="1.2"/><circle cx="170" cy="170" r="1.2"/><circle cx="210" cy="170" r="1.2"/><circle cx="250" cy="170" r="1.2"/>
+    <circle cx="50" cy="210" r="1.2"/><circle cx="90" cy="210" r="1.2"/><circle cx="130" cy="210" r="1.2"/><circle cx="170" cy="210" r="1.2"/><circle cx="210" cy="210" r="1.2"/><circle cx="250" cy="210" r="1.2"/>
+    <circle cx="50" cy="250" r="1.2"/><circle cx="90" cy="250" r="1.2"/><circle cx="130" cy="250" r="1.2"/><circle cx="170" cy="250" r="1.2"/><circle cx="210" cy="250" r="1.2"/><circle cx="250" cy="250" r="1.2"/>
+    <circle cx="950" cy="50" r="1.2"/><circle cx="990" cy="50" r="1.2"/><circle cx="1030" cy="50" r="1.2"/><circle cx="1070" cy="50" r="1.2"/><circle cx="1110" cy="50" r="1.2"/><circle cx="1150" cy="50" r="1.2"/>
+    <circle cx="950" cy="90" r="1.2"/><circle cx="990" cy="90" r="1.2"/><circle cx="1030" cy="90" r="1.2"/><circle cx="1070" cy="90" r="1.2"/><circle cx="1110" cy="90" r="1.2"/><circle cx="1150" cy="90" r="1.2"/>
+    <circle cx="950" cy="130" r="1.2"/><circle cx="990" cy="130" r="1.2"/><circle cx="1030" cy="130" r="1.2"/><circle cx="1070" cy="130" r="1.2"/><circle cx="1110" cy="130" r="1.2"/><circle cx="1150" cy="130" r="1.2"/>
+    <circle cx="950" cy="170" r="1.2"/><circle cx="990" cy="170" r="1.2"/><circle cx="1030" cy="170" r="1.2"/><circle cx="1070" cy="170" r="1.2"/><circle cx="1110" cy="170" r="1.2"/><circle cx="1150" cy="170" r="1.2"/>
+    <circle cx="950" cy="210" r="1.2"/><circle cx="990" cy="210" r="1.2"/><circle cx="1030" cy="210" r="1.2"/><circle cx="1070" cy="210" r="1.2"/><circle cx="1110" cy="210" r="1.2"/><circle cx="1150" cy="210" r="1.2"/>
+    <circle cx="950" cy="250" r="1.2"/><circle cx="990" cy="250" r="1.2"/><circle cx="1030" cy="250" r="1.2"/><circle cx="1070" cy="250" r="1.2"/><circle cx="1110" cy="250" r="1.2"/><circle cx="1150" cy="250" r="1.2"/>
   </g>
 
   <!-- Glow orbs -->
-  <circle cx="350" cy="150" r="180" fill="#7c3aed" opacity="0.06"/>
-  <circle cx="850" cy="150" r="150" fill="#7c3aed" opacity="0.04"/>
+  <circle cx="400" cy="140" r="200" fill="#7c3aed" opacity="0.07" filter="url(#blur1)"/>
+  <circle cx="800" cy="180" r="160" fill="#6d28d9" opacity="0.05" filter="url(#blur1)"/>
+
+  <!-- Pipeline decoration (left side) -->
+  <g opacity="0.12" stroke="#a78bfa" stroke-width="1.5" fill="none">
+    <circle cx="80" cy="280" r="6"/><circle cx="140" cy="280" r="6"/><circle cx="200" cy="280" r="6"/><circle cx="260" cy="280" r="6"/>
+    <line x1="86" y1="280" x2="134" y2="280"/>
+    <line x1="146" y1="280" x2="194" y2="280"/>
+    <line x1="206" y1="280" x2="254" y2="280"/>
+    <circle cx="140" cy="280" r="3" fill="#22c55e"/>
+    <circle cx="200" cy="280" r="3" fill="#22c55e"/>
+    <circle cx="260" cy="280" r="3" fill="#3b82f6"/>
+  </g>
+
+  <!-- Git branch decoration (right side) -->
+  <g opacity="0.1" stroke="#a78bfa" stroke-width="1.5" fill="none">
+    <line x1="1000" y1="280" x2="1000" y2="310"/>
+    <line x1="1000" y1="295" x2="1060" y2="280"/>
+    <line x1="1060" y1="280" x2="1060" y2="310"/>
+    <line x1="1060" y1="295" x2="1120" y2="310"/>
+    <circle cx="1000" cy="280" r="4" fill="#7c3aed"/>
+    <circle cx="1000" cy="310" r="4" fill="#7c3aed"/>
+    <circle cx="1060" cy="280" r="4" fill="#22c55e"/>
+    <circle cx="1060" cy="310" r="4" fill="#22c55e"/>
+    <circle cx="1120" cy="310" r="4" fill="#f59e0b"/>
+  </g>
 
   <!-- Logo -->
-  <g transform="translate(420, 95)">
-    <rect width="56" height="56" rx="14" fill="#7c3aed"/>
-    <path d="M17 10 C17 10 17 28 17 30 C17 36 22 38 28 38 C34 38 39 36 39 30 C39 28 39 10 39 10" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
-    <path d="M28 38 L28 46" stroke="white" stroke-width="5" stroke-linecap="round"/>
+  <g transform="translate(410, 75)">
+    <rect width="60" height="60" rx="15" fill="#7c3aed"/>
+    <rect width="60" height="60" rx="15" fill="url(#glow)"/>
+    <path d="M18 11 C18 11 18 29 18 31 C18 37 23 39 30 39 C37 39 42 37 42 31 C42 29 42 11 42 11" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M30 39 L30 49" stroke="white" stroke-width="5" stroke-linecap="round"/>
   </g>
 
   <!-- Title -->
-  <text x="496" y="138" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="42" font-weight="800" fill="white" letter-spacing="-1">GitForge</text>
+  <text x="490" y="118" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="44" font-weight="800" fill="white" letter-spacing="-1.5">GitForge</text>
 
   <!-- Tagline -->
-  <text x="498" y="168" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#8a8a9a" letter-spacing="0.5">Distributed Version Control &amp; Automation Platform</text>
+  <text x="492" y="148" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#8a8a9a" letter-spacing="0.5">Distributed Version Control &amp; Automation Platform</text>
 
   <!-- Bottom accent line -->
-  <rect x="350" y="200" width="500" height="2" rx="1" fill="url(#accent)" opacity="0.4"/>
+  <rect x="300" y="175" width="600" height="2" rx="1" fill="url(#accent)" opacity="0.3"/>
 
-  <!-- Feature pills -->
-  <g font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="600">
-    <rect x="350" y="220" width="80" height="24" rx="12" fill="#7c3aed" opacity="0.15"/>
-    <text x="369" y="236" fill="#a78bfa">30+ CLI</text>
+  <!-- Feature pills row 1 -->
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">
+    <rect x="300" y="195" width="82" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="318" y="210" fill="#a78bfa">AI Reviews</text>
 
-    <rect x="442" y="220" width="100" height="24" rx="12" fill="#7c3aed" opacity="0.15"/>
-    <text x="456" y="236" fill="#a78bfa">Pull Requests</text>
+    <rect x="394" y="195" width="86" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="408" y="210" fill="#a78bfa">CI/CD Engine</text>
 
-    <rect x="554" y="220" width="72" height="24" rx="12" fill="#7c3aed" opacity="0.15"/>
-    <text x="566" y="236" fill="#a78bfa">Snippets</text>
+    <rect x="492" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="506" y="210" fill="#a78bfa">GraphQL</text>
 
-    <rect x="638" y="220" width="82" height="24" rx="12" fill="#7c3aed" opacity="0.15"/>
-    <text x="651" y="236" fill="#a78bfa">Webhooks</text>
+    <rect x="576" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="588" y="210" fill="#a78bfa">30+ CLI</text>
 
-    <rect x="732" y="220" width="78" height="24" rx="12" fill="#7c3aed" opacity="0.15"/>
-    <text x="745" y="236" fill="#a78bfa">Real-time</text>
+    <rect x="660" y="195" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="674" y="210" fill="#a78bfa">Pull Requests</text>
+
+    <rect x="772" y="195" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="785" y="210" fill="#a78bfa">Webhooks</text>
+  </g>
+
+  <!-- Feature pills row 2 -->
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">
+    <rect x="300" y="225" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="313" y="240" fill="#8b7fc7">Kanban Boards</text>
+
+    <rect x="412" y="225" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="424" y="240" fill="#8b7fc7">Analytics</text>
+
+    <rect x="496" y="225" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="508" y="240" fill="#8b7fc7">API Keys</text>
+
+    <rect x="580" y="225" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="593" y="240" fill="#8b7fc7">Real-time</text>
+
+    <rect x="670" y="225" width="80" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="683" y="240" fill="#8b7fc7">Audit Logs</text>
+
+    <rect x="762" y="225" width="88" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="773" y="240" fill="#8b7fc7">Diff Viewer</text>
   </g>
 
   <!-- Top & bottom border lines -->
-  <rect x="0" y="0" width="1200" height="1" fill="#7c3aed" opacity="0.3"/>
-  <rect x="0" y="299" width="1200" height="1" fill="#7c3aed" opacity="0.3"/>
+  <rect x="0" y="0" width="1200" height="1" fill="url(#accent)" opacity="0.4"/>
+  <rect x="0" y="339" width="1200" height="1" fill="url(#accent)" opacity="0.4"/>
 </svg>

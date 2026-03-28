@@ -13,6 +13,12 @@ const snippetRouter = require("./snippet.router");
 const bookmarkRouter = require("./bookmark.router");
 const milestoneRouter = require("./milestone.router");
 const webhookRouter = require("./webhook.router");
+const pipelineRouter = require("./pipeline.router");
+const codeReviewRouter = require("./codeReview.router");
+const projectBoardRouter = require("./projectBoard.router");
+const apiKeyRouter = require("./apiKey.router");
+const auditLogRouter = require("./auditLog.router");
+const analyticsRouter = require("./analytics.router");
 const Snippet = require("../models/snippetModel");
 const Comment = require("../models/commentModel");
 const { search } = require("../controllers/searchController");
@@ -147,6 +153,12 @@ mainRouter.use(snippetRouter);
 mainRouter.use(bookmarkRouter);
 mainRouter.use(milestoneRouter);
 mainRouter.use(webhookRouter);
+mainRouter.use(pipelineRouter);
+mainRouter.use(codeReviewRouter);
+mainRouter.use(projectBoardRouter);
+mainRouter.use(apiKeyRouter);
+mainRouter.use(auditLogRouter);
+mainRouter.use(analyticsRouter);
 
 // ── Admin analytics ─────────────────────────────────────────────────────
 mainRouter.get("/admin/analytics", authMiddleware, cacheMiddleware(120000), asyncHandler(async (req, res) => {

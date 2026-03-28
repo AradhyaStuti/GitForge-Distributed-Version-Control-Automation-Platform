@@ -22,6 +22,16 @@ const Bookmarks = lazy(() => import("./components/bookmarks/Bookmarks"));
 const Admin = lazy(() => import("./components/admin/Admin"));
 const NotFound = lazy(() => import("./components/NotFound"));
 
+// ── New FAANG-level features ──────────────────────────────────────────────
+const PipelineDashboard = lazy(() => import("./components/pipeline/PipelineDashboard"));
+const CodeReviewPanel = lazy(() => import("./components/code-review/CodeReviewPanel"));
+const ProjectBoard = lazy(() => import("./components/board/ProjectBoard"));
+const AnalyticsDashboard = lazy(() => import("./components/analytics/AnalyticsDashboard"));
+const TrendingRepos = lazy(() => import("./components/trending/TrendingRepos"));
+const APIKeyManager = lazy(() => import("./components/api-keys/APIKeyManager"));
+const SecurityAuditLog = lazy(() => import("./components/audit/SecurityAuditLog"));
+const FileBrowser = lazy(() => import("./components/file-browser/FileBrowser"));
+
 function LoadingSpinner() {
   return <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }} role="status"><div className="spinner" /></div>;
 }
@@ -74,6 +84,16 @@ const ProjectRoutes = () => {
     { path: "/explore", element: <P><Explore /></P> },
     { path: "/bookmarks", element: <P><Bookmarks /></P> },
     { path: "/admin", element: <P><Admin /></P> },
+
+    // ── New FAANG-level routes ────────────────────────────────────────────
+    { path: "/repo/:repoId/pipelines", element: <P><PipelineDashboard /></P> },
+    { path: "/repo/:repoId/analytics", element: <P><AnalyticsDashboard /></P> },
+    { path: "/repo/:repoId/boards", element: <P><ProjectBoard /></P> },
+    { path: "/repo/:repoId/files", element: <P><FileBrowser /></P> },
+    { path: "/pr/:prId/review", element: <P><CodeReviewPanel /></P> },
+    { path: "/trending", element: <P><TrendingRepos /></P> },
+    { path: "/settings/api-keys", element: <P><APIKeyManager /></P> },
+    { path: "/settings/security-log", element: <P><SecurityAuditLog /></P> },
     { path: "*", element: <Suspense fallback={<LoadingSpinner />}><NotFound /></Suspense> },
   ]);
 };

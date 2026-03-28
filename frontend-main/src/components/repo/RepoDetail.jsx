@@ -189,6 +189,18 @@ const RepoDetail = () => {
         <Link to={`/repo/${id}/pulls`} className="repo-tab repo-tab-link">
           Pull Requests
         </Link>
+        <Link to={`/repo/${id}/pipelines`} className="repo-tab repo-tab-link">
+          Pipelines
+        </Link>
+        <Link to={`/repo/${id}/boards`} className="repo-tab repo-tab-link">
+          Boards
+        </Link>
+        <Link to={`/repo/${id}/analytics`} className="repo-tab repo-tab-link">
+          Analytics
+        </Link>
+        <Link to={`/repo/${id}/files`} className="repo-tab repo-tab-link">
+          Files
+        </Link>
       </div>
 
       {activeTab === "code" && (
