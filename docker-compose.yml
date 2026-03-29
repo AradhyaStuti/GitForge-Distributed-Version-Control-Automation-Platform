@@ -13,6 +13,7 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - MONGODB_URI=mongodb://mongodb:27017/gitforge
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-default-dev-secret-key-change-in-production-min32chars}
       - REDIS_URL=redis://redis:6379
       - ALLOWED_ORIGINS=http://localhost,http://localhost:80
     depends_on:
