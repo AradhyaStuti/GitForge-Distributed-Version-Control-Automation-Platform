@@ -98,13 +98,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker Images
-        run: docker-compose build
+        run: docker compose build
       - name: Verify containers start
         run: |
-          docker-compose up -d
+          docker compose up -d
           sleep 10
-          docker-compose ps
-          docker-compose down
+          docker compose ps
+          docker compose down
 
   security:
     runs-on: ubuntu-latest
