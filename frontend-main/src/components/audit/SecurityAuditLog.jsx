@@ -34,7 +34,7 @@ const ACTION_LABELS = {
 const PAGE_SIZE = 20;
 
 const SecurityAuditLog = () => {
-  const { currentUser } = useAuth();
+  useAuth();
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);

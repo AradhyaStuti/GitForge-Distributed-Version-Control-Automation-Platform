@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import PropTypes from "prop-types";
 import api from "../../api";
 import toast from "react-hot-toast";
 import "./file-browser.css";
@@ -68,7 +69,6 @@ function sortEntries(entries) {
   });
 }
 
-// eslint-disable-next-line react/prop-types
 const TreeNode = ({ node, depth = 0, onFileClick, expandedDirs, toggleDir }) => {
   const isExpanded = expandedDirs.has(node.fullPath);
 
@@ -113,7 +113,23 @@ const TreeNode = ({ node, depth = 0, onFileClick, expandedDirs, toggleDir }) => 
   );
 };
 
-// eslint-disable-next-line react/prop-types
+const nodeShape = {
+  name: PropTypes.string,
+  fullPath: PropTypes.string,
+  isDir: PropTypes.bool,
+  size: PropTypes.number,
+  lastCommit: PropTypes.string,
+};
+nodeShape.children = PropTypes.objectOf(PropTypes.shape(nodeShape));
+
+TreeNode.propTypes = {
+  node: PropTypes.shape(nodeShape).isRequired,
+  depth: PropTypes.number,
+  onFileClick: PropTypes.func.isRequired,
+  expandedDirs: PropTypes.instanceOf(Set).isRequired,
+  toggleDir: PropTypes.func.isRequired,
+};
+
 const FileBrowser = ({ files = [], repoId, currentPath = "" }) => {
   const [expandedDirs, setExpandedDirs] = useState(new Set());
   const [selectedFile, setSelectedFile] = useState(null);
@@ -274,6 +290,12 @@ const FileBrowser = ({ files = [], repoId, currentPath = "" }) => {
       </div>
     </div>
   );
+};
+
+FileBrowser.propTypes = {
+  files: PropTypes.array,
+  repoId: PropTypes.string,
+  currentPath: PropTypes.string,
 };
 
 export default FileBrowser;

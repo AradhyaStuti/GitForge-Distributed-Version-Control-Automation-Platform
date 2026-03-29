@@ -10,7 +10,7 @@ const PRIORITY_LABELS = { critical: "Critical", high: "High", medium: "Medium", 
 
 const ProjectBoard = () => {
   const { repoId } = useParams();
-  const { currentUser } = useAuth();
+  useAuth();
   const { draggedItem, handleDragStart, handleDragOver, handleDrop, isDragging, dragOverTarget } = useDragAndDrop();
 
   const [board, setBoard] = useState(null);

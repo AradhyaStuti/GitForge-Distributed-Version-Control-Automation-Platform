@@ -19,7 +19,7 @@ const TIME_RANGES = [
 ];
 
 const TrendingRepos = () => {
-  const { currentUser } = useAuth();
+  useAuth();
 
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);

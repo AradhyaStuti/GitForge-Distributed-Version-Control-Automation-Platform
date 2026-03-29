@@ -14,12 +14,12 @@ const LANGUAGE_COLORS = {
 
 const AnalyticsDashboard = () => {
   const { repoId } = useParams();
-  const { currentUser } = useAuth();
+  useAuth();
 
   const [analytics, setAnalytics] = useState(null);
   const [languages, setLanguages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState("year");
+  const [, /* timeRange */] = useState("year");
 
   useEffect(() => {
     const controller = new AbortController();

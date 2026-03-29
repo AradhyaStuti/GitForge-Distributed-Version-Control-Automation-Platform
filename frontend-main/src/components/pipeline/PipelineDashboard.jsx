@@ -16,7 +16,7 @@ const STATUS_LABELS = {
 
 const PipelineDashboard = () => {
   const { repoId } = useParams();
-  const { currentUser } = useAuth();
+  useAuth();
   const socketRef = useSocket();
 
   const [pipelines, setPipelines] = useState([]);

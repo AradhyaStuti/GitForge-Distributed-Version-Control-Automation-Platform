@@ -25,7 +25,7 @@ const EXPIRY_OPTIONS = [
 ];
 
 const APIKeyManager = () => {
-  const { currentUser } = useAuth();
+  useAuth();
 
   const [keys, setKeys] = useState([]);
   const [loading, setLoading] = useState(true);

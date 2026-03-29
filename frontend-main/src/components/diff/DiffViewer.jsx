@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import PropTypes from "prop-types";
 import toast from "react-hot-toast";
 import "./diff-viewer.css";
 
@@ -68,7 +69,6 @@ function parseDiff(diffStr) {
   return files;
 }
 
-// eslint-disable-next-line react/prop-types
 const DiffViewer = ({ diff = "", files: filesProp }) => {
   const [viewMode, setViewMode] = useState("unified");
   const [collapsedFiles, setCollapsedFiles] = useState(new Set());
@@ -258,6 +258,17 @@ const DiffViewer = ({ diff = "", files: filesProp }) => {
       })}
     </div>
   );
+};
+
+DiffViewer.propTypes = {
+  diff: PropTypes.string,
+  files: PropTypes.arrayOf(PropTypes.shape({
+    filename: PropTypes.string,
+    hunks: PropTypes.array,
+    additions: PropTypes.number,
+    deletions: PropTypes.number,
+    length: PropTypes.number,
+  })),
 };
 
 export default DiffViewer;

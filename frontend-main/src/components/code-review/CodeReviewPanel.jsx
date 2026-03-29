@@ -9,7 +9,7 @@ const SEVERITY_LABELS = { critical: "Critical", warning: "Warning", info: "Info"
 
 // eslint-disable-next-line react/prop-types
 const CodeReviewPanel = ({ prId }) => {
-  const { currentUser } = useAuth();
+  useAuth();
   const [review, setReview] = useState(null);
   const [loading, setLoading] = useState(true);
   const [scanning, setScanning] = useState(false);
@@ -197,7 +197,7 @@ const CodeReviewPanel = ({ prId }) => {
           </div>
         ) : (
           <div className="cr-suggestion-list">
-            {sortedSuggestions.map((suggestion, idx) => {
+            {sortedSuggestions.map((suggestion) => {
               const originalIdx = suggestions.indexOf(suggestion);
               const isExpanded = expandedSuggestion === originalIdx;
               const isActioned = suggestion.status === "accepted" || suggestion.status === "rejected";

@@ -16,7 +16,7 @@ function sanitizeHtml(html) {
 /**
  * Basic syntax keyword highlighting for code blocks.
  */
-function highlightCode(code, language) {
+function highlightCode(code) {
   const keywords = [
     "const", "let", "var", "function", "return", "if", "else", "for", "while", "do",
     "switch", "case", "break", "continue", "class", "extends", "import", "export",
@@ -62,7 +62,7 @@ function parseMarkdown(content) {
 
   // Code blocks (``` ... ```)
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
-    const highlighted = highlightCode(code.trimEnd(), lang);
+    const highlighted = highlightCode(code.trimEnd());
     const langLabel = lang ? `<span class="md-code-lang">${lang}</span>` : "";
     return `<div class="md-code-block">${langLabel}<pre><code>${highlighted}</code></pre></div>`;
   });
@@ -77,7 +77,7 @@ function parseMarkdown(content) {
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="md-link" target="_blank" rel="noopener noreferrer">$1</a>');
 
   // Auto-link URLs
-  html = html.replace(/(?<!["\(href=])(https?:\/\/[^\s<]+)/g, '<a href="$1" class="md-link" target="_blank" rel="noopener noreferrer">$1</a>');
+  html = html.replace(/(?<!["(href=])(https?:\/\/[^\s<]+)/g, '<a href="$1" class="md-link" target="_blank" rel="noopener noreferrer">$1</a>');
 
   // Horizontal rules
   html = html.replace(/^\s*[-*_]{3,}\s*$/gm, '<hr class="md-hr" />');
