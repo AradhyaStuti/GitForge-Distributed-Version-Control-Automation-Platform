@@ -37,7 +37,7 @@ describe("Signup Component", () => {
 
     expect(screen.getByText("Create your account")).toBeTruthy();
     expect(screen.getByLabelText("Username")).toBeTruthy();
-    expect(screen.getByLabelText("Email address")).toBeTruthy();
+    expect(screen.getByLabelText("Email")).toBeTruthy();
     expect(screen.getByLabelText("Password")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Create account" })).toBeTruthy();
   });
@@ -56,20 +56,20 @@ describe("Signup Component", () => {
     renderSignup();
 
     fireEvent.change(screen.getByLabelText("Username"), { target: { value: "testuser" } });
-    fireEvent.change(screen.getByLabelText("Email address"), { target: { value: "test@test.com" } });
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "test@test.com" } });
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "12345" } });
 
     fireEvent.click(screen.getByRole("button", { name: "Create account" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Password must be at least 6 characters.")).toBeTruthy();
+      expect(screen.getByText("Password must be at least 8 characters.")).toBeTruthy();
     });
   });
 
   it("has a link to login page", () => {
     renderSignup();
 
-    const link = screen.getByText("Sign in");
+    const link = screen.getByText("Sign in to existing account");
     expect(link.getAttribute("href")).toBe("/auth");
   });
 });

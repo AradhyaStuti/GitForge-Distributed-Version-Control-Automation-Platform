@@ -37,8 +37,8 @@ describe("Login Component", () => {
   it("renders the login form", () => {
     renderLogin();
 
-    expect(screen.getByText("Sign in to GitForge")).toBeTruthy();
-    expect(screen.getByLabelText("Email address")).toBeTruthy();
+    expect(screen.getByText("Welcome back")).toBeTruthy();
+    expect(screen.getByLabelText("Email")).toBeTruthy();
     expect(screen.getByLabelText("Password")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Sign in" })).toBeTruthy();
   });
@@ -56,14 +56,14 @@ describe("Login Component", () => {
   it("has a link to signup page", () => {
     renderLogin();
 
-    const link = screen.getByText("Create an account");
+    const link = screen.getByText("Create a new account");
     expect(link.getAttribute("href")).toBe("/signup");
   });
 
   it("updates input values", () => {
     renderLogin();
 
-    const emailInput = screen.getByLabelText("Email address");
+    const emailInput = screen.getByLabelText("Email");
     const passwordInput = screen.getByLabelText("Password");
 
     fireEvent.change(emailInput, { target: { value: "test@example.com" } });

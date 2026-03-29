@@ -28,8 +28,8 @@ const Dashboard = () => {
         if (controller.signal.aborted) return;
         setRepositories(userRepos.data.repositories || []);
         setStats(statsRes.data);
-        setFeed(feedRes.data || []);
-        setTrending(trendingRes.data || []);
+        setFeed(Array.isArray(feedRes.data) ? feedRes.data : []);
+        setTrending(Array.isArray(trendingRes.data) ? trendingRes.data : []);
       } catch { /* ignored */ } finally { if (!controller.signal.aborted) setLoading(false); }
     };
     if (currentUser) fetchData();
