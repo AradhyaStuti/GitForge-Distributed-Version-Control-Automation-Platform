@@ -1,12 +1,185 @@
 'use strict';
 
+const fs = require("fs").promises;
+const path = require("path");
 const CodeReview = require("../models/CodeReview");
 const PullRequest = require("../models/pullRequestModel");
 const Repository = require("../models/repoModel");
 const { AppError } = require("../middleware/errorHandler");
 
+/**
+ * Myers diff algorithm — computes the shortest edit script (SES) between two
+ * arrays of lines.  Returns an array of { type, value } where type is one of
+ * "equal", "insert", or "delete".
+ *
+ * Reference: Eugene W. Myers, "An O(ND) Difference Algorithm and Its
+ * Variations", Algorithmica 1(2), 1986.
+ */
+function myersDiff(oldLines, newLines) {
+  const N = oldLines.length;
+  const M = newLines.length;
+  const MAX = N + M;
+
+  if (MAX === 0) return [];
+
+  // V stores the furthest-reaching endpoint on each k-diagonal
+  const V = new Int32Array(2 * MAX + 1);
+  const offset = MAX; // shift so negative indices work
+  V[offset + 1] = 0;
+
+  // Record the V snapshot for each D so we can back-track
+  const trace = [];
+
+  let found = false;
+  for (let D = 0; D <= MAX && !found; D++) {
+    trace.push(V.slice()); // snapshot
+    for (let k = -D; k <= D; k += 2) {
+      let x;
+      if (k === -D || (k !== D && V[offset + k - 1] < V[offset + k + 1])) {
+        x = V[offset + k + 1]; // move down
+      } else {
+        x = V[offset + k - 1] + 1; // move right
+      }
+      let y = x - k;
+
+      // Follow diagonal (equal lines)
+      while (x < N && y < M && oldLines[x] === newLines[y]) {
+        x++;
+        y++;
+      }
+
+      V[offset + k] = x;
+
+      if (x >= N && y >= M) {
+        found = true;
+        break;
+      }
+    }
+  }
+
+  // Back-track through the trace to recover the edit path
+  const edits = [];
+  let x = N;
+  let y = M;
+
+  for (let D = trace.length - 1; D >= 0; D--) {
+    const Vprev = trace[D];
+    const k = x - y;
+
+    let prevK;
+    if (k === -D || (k !== D && Vprev[offset + k - 1] < Vprev[offset + k + 1])) {
+      prevK = k + 1; // came from a down move (insert)
+    } else {
+      prevK = k - 1; // came from a right move (delete)
+    }
+
+    const prevX = Vprev[offset + prevK];
+    const prevY = prevX - prevK;
+
+    // Diagonal moves (equal lines) from (prevX, prevY) to the move start
+    while (x > prevX && y > prevY) {
+      x--;
+      y--;
+      edits.push({ type: "equal", value: oldLines[x] });
+    }
+
+    if (D > 0) {
+      if (x === prevX) {
+        // Down move → insert
+        y--;
+        edits.push({ type: "insert", value: newLines[y] });
+      } else {
+        // Right move → delete
+        x--;
+        edits.push({ type: "delete", value: oldLines[x] });
+      }
+    }
+  }
+
+  edits.reverse();
+  return edits;
+}
+
 class CodeReviewService {
-  async createReview(prId, repoId) {
+  /**
+   * Build a unified diff between two branch tips by reading
+   * the .gitforge filesystem that backs this repository.
+   */
+  async _buildDiffFromBranches(repoPath, sourceBranch, targetBranch) {
+    const commitsPath = path.join(repoPath, "commits");
+    const branchesPath = path.join(repoPath, "branches");
+
+    const readBranchTip = async (branch) => {
+      try {
+        const data = JSON.parse(
+          await fs.readFile(path.join(branchesPath, `${branch}.json`), "utf-8")
+        );
+        return data.commitId || null;
+      } catch {
+        return null;
+      }
+    };
+
+    const readCommitFiles = async (commitId) => {
+      if (!commitId) return {};
+      const commitDir = path.join(commitsPath, commitId);
+      const entries = await fs.readdir(commitDir).catch(() => []);
+      const files = {};
+      for (const name of entries) {
+        if (name === "commit.json") continue;
+        files[name] = await fs.readFile(path.join(commitDir, name), "utf-8");
+      }
+      return files;
+    };
+
+    const sourceCommit = await readBranchTip(sourceBranch);
+    const targetCommit = await readBranchTip(targetBranch);
+
+    const sourceFiles = await readCommitFiles(sourceCommit);
+    const targetFiles = await readCommitFiles(targetCommit);
+
+    const allFileNames = new Set([
+      ...Object.keys(sourceFiles),
+      ...Object.keys(targetFiles),
+    ]);
+
+    const diffParts = [];
+    const changedFiles = [];
+
+    for (const filename of allFileNames) {
+      const oldContent = targetFiles[filename] || "";
+      const newContent = sourceFiles[filename] || "";
+      if (oldContent === newContent) continue;
+
+      changedFiles.push(filename);
+      const oldLines = oldContent ? oldContent.split("\n") : [];
+      const newLines = newContent ? newContent.split("\n") : [];
+
+      diffParts.push(`diff --git a/${filename} b/${filename}`);
+      diffParts.push(`--- a/${filename}`);
+      diffParts.push(`+++ b/${filename}`);
+
+      // Myers diff algorithm — produces minimal edit script
+      const editScript = myersDiff(oldLines, newLines);
+      const hunkLines = [];
+      for (const op of editScript) {
+        if (op.type === "equal") {
+          hunkLines.push(` ${op.value}`);
+        } else if (op.type === "delete") {
+          hunkLines.push(`-${op.value}`);
+        } else if (op.type === "insert") {
+          hunkLines.push(`+${op.value}`);
+        }
+      }
+
+      diffParts.push(`@@ -1,${oldLines.length} +1,${newLines.length} @@`);
+      diffParts.push(...hunkLines);
+    }
+
+    return { diff: diffParts.join("\n"), files: changedFiles };
+  }
+
+  async create({ pullRequest: prId, repository: repoId }) {
     const pr = await PullRequest.findById(prId);
     if (!pr) throw new AppError("Pull request not found.", 404);
 
@@ -20,10 +193,28 @@ class CodeReviewService {
       status: "in_progress",
     });
 
-    // Simulate AI analysis
     const startTime = Date.now();
-    const sampleDiff = `diff --git a/src/index.js b/src/index.js\n+eval(userInput);\n+var password = "admin123";\n+for(var i=0;i<arr.length;i++){for(var j=0;j<arr2.length;j++){}}`;
-    const analysis = this.analyzeCode(sampleDiff, ["src/index.js"]);
+
+    // Try to build a real diff from the .gitforge filesystem
+    const repoPath = path.resolve(process.cwd(), ".gitforge");
+    let diff;
+    let files;
+
+    try {
+      const result = await this._buildDiffFromBranches(
+        repoPath,
+        pr.sourceBranch,
+        pr.targetBranch
+      );
+      diff = result.diff;
+      files = result.files;
+    } catch {
+      // Fallback: empty diff when .gitforge is unavailable
+      diff = "";
+      files = [];
+    }
+
+    const analysis = this.analyzeCode(diff, files);
     const analysisTime = Date.now() - startTime;
 
     review.status = "completed";
@@ -32,20 +223,25 @@ class CodeReviewService {
     review.suggestions = analysis.suggestions;
     review.metrics = analysis.metrics;
     review.analysisTime = analysisTime;
-    review.diff = sampleDiff;
+    review.diff = diff;
 
     await review.save();
     return review;
   }
 
-  async getReviewsByPR(prId) {
-    const reviews = await CodeReview.find({ pullRequest: prId })
-      .sort({ createdAt: -1 });
-
-    return reviews;
+  async listByPR(prId, { page = 1, limit = 20 } = {}) {
+    const skip = (page - 1) * limit;
+    const [reviews, total] = await Promise.all([
+      CodeReview.find({ pullRequest: prId })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      CodeReview.countDocuments({ pullRequest: prId }),
+    ]);
+    return { reviews, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
   }
 
-  async getReviewById(id) {
+  async getById(id) {
     const review = await CodeReview.findById(id)
       .populate("pullRequest", "title status")
       .populate("repository", "name owner");
@@ -191,7 +387,7 @@ class CodeReviewService {
     return review;
   }
 
-  async getReviewStats(repoId) {
+  async getStats(repoId) {
     const reviews = await CodeReview.find({ repository: repoId, status: "completed" }).lean();
 
     if (reviews.length === 0) {

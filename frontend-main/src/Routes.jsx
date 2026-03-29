@@ -22,7 +22,6 @@ const Bookmarks = lazy(() => import("./components/bookmarks/Bookmarks"));
 const Admin = lazy(() => import("./components/admin/Admin"));
 const NotFound = lazy(() => import("./components/NotFound"));
 
-// ── New FAANG-level features ──────────────────────────────────────────────
 const PipelineDashboard = lazy(() => import("./components/pipeline/PipelineDashboard"));
 const CodeReviewPanel = lazy(() => import("./components/code-review/CodeReviewPanel"));
 const ProjectBoard = lazy(() => import("./components/board/ProjectBoard"));
@@ -85,7 +84,6 @@ const ProjectRoutes = () => {
     { path: "/bookmarks", element: <P><Bookmarks /></P> },
     { path: "/admin", element: <P><Admin /></P> },
 
-    // ── New FAANG-level routes ────────────────────────────────────────────
     { path: "/repo/:repoId/pipelines", element: <P><PipelineDashboard /></P> },
     { path: "/repo/:repoId/analytics", element: <P><AnalyticsDashboard /></P> },
     { path: "/repo/:repoId/boards", element: <P><ProjectBoard /></P> },

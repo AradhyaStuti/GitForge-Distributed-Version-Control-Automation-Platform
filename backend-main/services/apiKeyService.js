@@ -4,7 +4,9 @@ const APIKey = require("../models/APIKey");
 const { AppError } = require("../middleware/errorHandler");
 
 class APIKeyService {
-  async createKey(userId, { name, scopes, expiresIn }) {
+  // ── Controller-facing methods (match apiKeyController.js signatures) ──
+
+  async create({ name, scopes, expiresIn, userId }) {
     if (!name) throw new AppError("API key name is required.", 400);
     if (!scopes || scopes.length === 0) throw new AppError("At least one scope is required.", 400);
 
@@ -26,7 +28,6 @@ class APIKeyService {
       expiresAt,
     });
 
-    // Return the plain key only once
     return {
       _id: apiKey._id,
       name: apiKey.name,
@@ -38,15 +39,21 @@ class APIKeyService {
     };
   }
 
-  async listKeys(userId) {
-    const keys = await APIKey.find({ owner: userId })
-      .select("-key")
-      .sort({ createdAt: -1 });
+  async listByUser(userId, { page = 1, limit = 20 } = {}) {
+    const skip = (page - 1) * limit;
+    const [keys, total] = await Promise.all([
+      APIKey.find({ owner: userId })
+        .select("-key")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      APIKey.countDocuments({ owner: userId }),
+    ]);
 
-    return keys;
+    return { keys, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
   }
 
-  async revokeKey(keyId, userId) {
+  async revoke(keyId, userId) {
     const apiKey = await APIKey.findOne({ _id: keyId, owner: userId });
     if (!apiKey) throw new AppError("API key not found.", 404);
 
@@ -66,9 +73,7 @@ class APIKeyService {
     const apiKey = await APIKey.findOne({ key: hashedKey });
 
     if (!apiKey) throw new AppError("Invalid API key.", 401);
-
     if (!apiKey.isActive) throw new AppError("API key has been revoked.", 401);
-
     if (apiKey.expiresAt && apiKey.expiresAt < new Date()) {
       throw new AppError("API key has expired.", 401);
     }
@@ -80,27 +85,24 @@ class APIKeyService {
     return apiKey;
   }
 
-  async rotateKey(keyId, userId) {
+  async rotate(keyId, userId) {
     const existing = await APIKey.findOne({ _id: keyId, owner: userId });
     if (!existing) throw new AppError("API key not found.", 404);
 
-    // Revoke old key
     existing.isActive = false;
     await existing.save();
 
-    // Create new key with same config
-    const newKey = await this.createKey(userId, {
+    return this.create({
       name: existing.name,
       scopes: existing.scopes,
       expiresIn: existing.expiresAt
         ? existing.expiresAt.getTime() - existing.createdAt.getTime()
         : null,
+      userId,
     });
-
-    return newKey;
   }
 
-  async getKeyUsageStats(userId) {
+  async getUsage(userId) {
     const keys = await APIKey.find({ owner: userId }).lean();
 
     const totalKeys = keys.length;

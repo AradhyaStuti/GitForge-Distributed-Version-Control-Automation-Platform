@@ -7,7 +7,7 @@ class AuditLogService {
   async log({ actor, actorIP, action, resource, details, status, userAgent, requestId }) {
     if (!action) throw new AppError("Audit action is required.", 400);
 
-    const entry = await AuditLog.create({
+    return AuditLog.create({
       actor,
       actorIP,
       action,
@@ -17,11 +17,11 @@ class AuditLogService {
       userAgent,
       requestId,
     });
-
-    return entry;
   }
 
-  async getLogsByUser(userId, { page = 1, limit = 50, action, startDate, endDate } = {}) {
+  // ── Controller-facing methods (match auditLogController.js signatures) ──
+
+  async listByUser(userId, { page = 1, limit = 50, action, startDate, endDate } = {}) {
     const skip = (page - 1) * limit;
     const filter = { actor: userId };
 
@@ -44,31 +44,9 @@ class AuditLogService {
     return { logs, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
   }
 
-  async getLogsByResource(resourceType, resourceId, { page = 1, limit = 50 } = {}) {
+  async listByResource(resourceType, resourceId, { page = 1, limit = 50 } = {}) {
     const skip = (page - 1) * limit;
     const filter = { "resource.type": resourceType, "resource.id": resourceId };
-
-    const [logs, total] = await Promise.all([
-      AuditLog.find(filter)
-        .populate("actor", "username email")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit),
-      AuditLog.countDocuments(filter),
-    ]);
-
-    return { logs, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
-  }
-
-  async getLogsByAction(action, { page = 1, limit = 50, startDate, endDate } = {}) {
-    const skip = (page - 1) * limit;
-    const filter = { action };
-
-    if (startDate || endDate) {
-      filter.createdAt = {};
-      if (startDate) filter.createdAt.$gte = new Date(startDate);
-      if (endDate) filter.createdAt.$lte = new Date(endDate);
-    }
 
     const [logs, total] = await Promise.all([
       AuditLog.find(filter)
@@ -115,7 +93,7 @@ class AuditLogService {
     return { logs, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
   }
 
-  async getAuditStats({ startDate, endDate } = {}) {
+  async getStats({ startDate, endDate } = {}) {
     const match = {};
     if (startDate || endDate) {
       match.createdAt = {};

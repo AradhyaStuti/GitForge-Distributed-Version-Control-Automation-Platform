@@ -40,6 +40,7 @@ const config = {
   },
   maxLoginAttempts: parseInt(process.env.MAX_LOGIN_ATTEMPTS, 10) || 5,
   lockoutDuration: parseInt(process.env.LOCKOUT_DURATION, 10) || 15 * 60 * 1000,
+  redisUrl: process.env.REDIS_URL || null,
 };
 
 module.exports = config;

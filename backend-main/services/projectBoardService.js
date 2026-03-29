@@ -5,35 +5,38 @@ const ProjectBoard = require("../models/ProjectBoard");
 const { AppError } = require("../middleware/errorHandler");
 
 class ProjectBoardService {
-  async createBoard(data) {
-    const board = await ProjectBoard.create({
-      name: data.name,
-      description: data.description || "",
-      repository: data.repository || null,
-      owner: data.owner,
-      visibility: data.visibility || "private",
-      members: data.members || [],
+  // ── Controller-facing methods (match projectBoardController.js signatures) ──
+
+  async create({ name, description, repository, owner, visibility, members }) {
+    return ProjectBoard.create({
+      name,
+      description: description || "",
+      repository: repository || null,
+      owner,
+      visibility: visibility || "private",
+      members: members || [],
     });
-
-    return board;
   }
 
-  async getBoardsByRepo(repoId) {
-    return ProjectBoard.find({ repository: repoId, archived: false })
-      .populate("owner", "username email")
-      .sort({ createdAt: -1 });
+  async list({ repository, user, page = 1, limit = 20 } = {}) {
+    const filter = { archived: false };
+    if (repository) filter.repository = repository;
+    if (user) filter.$or = [{ owner: user }, { "members.user": user }];
+    const skip = (page - 1) * limit;
+
+    const [boards, total] = await Promise.all([
+      ProjectBoard.find(filter)
+        .populate("owner", "username email")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      ProjectBoard.countDocuments(filter),
+    ]);
+
+    return { boards, pagination: { page, limit, total, pages: Math.ceil(total / limit) } };
   }
 
-  async getBoardsByUser(userId) {
-    return ProjectBoard.find({
-      $or: [{ owner: userId }, { "members.user": userId }],
-      archived: false,
-    })
-      .populate("owner", "username email")
-      .sort({ updatedAt: -1 });
-  }
-
-  async getBoardById(id) {
+  async getById(id) {
     const board = await ProjectBoard.findById(id)
       .populate("owner", "username email")
       .populate("members.user", "username email")
@@ -44,7 +47,7 @@ class ProjectBoardService {
     return board;
   }
 
-  async updateBoard(id, data) {
+  async update(id, userId, data) {
     const board = await ProjectBoard.findById(id);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -57,13 +60,13 @@ class ProjectBoardService {
     return board;
   }
 
-  async deleteBoard(id) {
+  async delete(id, userId) {
     const board = await ProjectBoard.findByIdAndDelete(id);
     if (!board) throw new AppError("Project board not found.", 404);
     return { message: "Project board deleted." };
   }
 
-  async addColumn(boardId, columnData) {
+  async addColumn(boardId, userId, columnData) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -81,7 +84,7 @@ class ProjectBoardService {
     return board;
   }
 
-  async updateColumn(boardId, columnId, data) {
+  async updateColumn(boardId, columnId, userId, data) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -97,7 +100,7 @@ class ProjectBoardService {
     return board;
   }
 
-  async deleteColumn(boardId, columnId) {
+  async deleteColumn(boardId, columnId, userId) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -105,14 +108,13 @@ class ProjectBoardService {
     if (idx === -1) throw new AppError("Column not found.", 404);
 
     board.columns.splice(idx, 1);
-    // Reorder positions
     board.columns.forEach((col, i) => { col.position = i; });
 
     await board.save();
     return board;
   }
 
-  async moveColumn(boardId, columnId, newPosition) {
+  async moveColumn(boardId, columnId, userId, { position }) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -120,14 +122,14 @@ class ProjectBoardService {
     if (idx === -1) throw new AppError("Column not found.", 404);
 
     const [column] = board.columns.splice(idx, 1);
-    board.columns.splice(newPosition, 0, column);
+    board.columns.splice(position, 0, column);
     board.columns.forEach((col, i) => { col.position = i; });
 
     await board.save();
     return board;
   }
 
-  async addCard(boardId, columnId, cardData) {
+  async addCard(boardId, columnId, userId, cardData) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -150,7 +152,7 @@ class ProjectBoardService {
       priority: cardData.priority || "none",
       dueDate: cardData.dueDate || null,
       position,
-      createdBy: cardData.createdBy,
+      createdBy: userId,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -159,7 +161,7 @@ class ProjectBoardService {
     return board;
   }
 
-  async updateCard(boardId, columnId, cardId, data) {
+  async updateCard(boardId, columnId, cardId, userId, data) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -179,7 +181,7 @@ class ProjectBoardService {
     return board;
   }
 
-  async deleteCard(boardId, columnId, cardId) {
+  async deleteCard(boardId, columnId, cardId, userId) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
@@ -196,57 +198,31 @@ class ProjectBoardService {
     return board;
   }
 
-  async moveCard(boardId, fromColumnId, toColumnId, cardId, newPosition) {
+  async moveCard(boardId, cardId, userId, { fromColumn, toColumn, position }) {
     const board = await ProjectBoard.findById(boardId);
     if (!board) throw new AppError("Project board not found.", 404);
 
-    const fromColumn = board.columns.find((c) => c.id === fromColumnId);
-    if (!fromColumn) throw new AppError("Source column not found.", 404);
+    const fromCol = board.columns.find((c) => c.id === fromColumn);
+    if (!fromCol) throw new AppError("Source column not found.", 404);
 
-    const toColumn = board.columns.find((c) => c.id === toColumnId);
-    if (!toColumn) throw new AppError("Target column not found.", 404);
+    const toCol = board.columns.find((c) => c.id === toColumn);
+    if (!toCol) throw new AppError("Target column not found.", 404);
 
-    const cardIdx = fromColumn.cards.findIndex((c) => c.id === cardId);
+    const cardIdx = fromCol.cards.findIndex((c) => c.id === cardId);
     if (cardIdx === -1) throw new AppError("Card not found.", 404);
 
-    if (fromColumnId !== toColumnId && toColumn.wipLimit > 0 && toColumn.cards.length >= toColumn.wipLimit) {
-      throw new AppError(`Target column "${toColumn.name}" has reached its WIP limit.`, 400);
+    if (fromColumn !== toColumn && toCol.wipLimit > 0 && toCol.cards.length >= toCol.wipLimit) {
+      throw new AppError(`Target column "${toCol.name}" has reached its WIP limit.`, 400);
     }
 
-    const [card] = fromColumn.cards.splice(cardIdx, 1);
+    const [card] = fromCol.cards.splice(cardIdx, 1);
     card.updatedAt = new Date();
 
-    const insertAt = newPosition !== null ? newPosition : toColumn.cards.length;
-    toColumn.cards.splice(insertAt, 0, card);
+    const insertAt = position !== null && position !== undefined ? position : toCol.cards.length;
+    toCol.cards.splice(insertAt, 0, card);
 
-    fromColumn.cards.forEach((c, i) => { c.position = i; });
-    toColumn.cards.forEach((c, i) => { c.position = i; });
-
-    await board.save();
-    return board;
-  }
-
-  async linkIssue(boardId, columnId, issueId) {
-    const board = await ProjectBoard.findById(boardId);
-    if (!board) throw new AppError("Project board not found.", 404);
-
-    const column = board.columns.find((c) => c.id === columnId);
-    if (!column) throw new AppError("Column not found.", 404);
-
-    const existing = board.columns.some((col) =>
-      col.cards.some((card) => card.issue && card.issue.toString() === issueId.toString())
-    );
-    if (existing) throw new AppError("Issue is already linked to this board.", 409);
-
-    column.cards.push({
-      id: crypto.randomUUID(),
-      type: "issue",
-      title: `Issue #${issueId}`,
-      issue: issueId,
-      position: column.cards.length,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    fromCol.cards.forEach((c, i) => { c.position = i; });
+    toCol.cards.forEach((c, i) => { c.position = i; });
 
     await board.save();
     return board;

@@ -314,8 +314,22 @@ function startServer() {
   app.post("/graphql", express.json(), async (req, res) => {
     try {
       const { query, variables } = req.body;
-      const result = await executeQuery(query, variables);
-      res.json({ data: result });
+
+      // Extract userId from JWT if present
+      const context = {};
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        try {
+          const jwt = require("jsonwebtoken");
+          const decoded = jwt.verify(authHeader.slice(7), config.jwtSecret);
+          context.userId = decoded.id;
+        } catch {
+          // Unauthenticated — mutations that need auth will throw
+        }
+      }
+
+      const result = await executeQuery(query, variables, context);
+      res.json(result);
     } catch (err) {
       res.status(400).json({ errors: [{ message: err.message }] });
     }
