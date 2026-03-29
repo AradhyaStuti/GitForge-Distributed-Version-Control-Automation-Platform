@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/CI-GitHub_Actions-7c3aed?style=flat-square&logo=githubactions&logoColor=white"/>
 </p>
 
-A full-stack code hosting platform I built to understand how systems like GitHub actually work. It has its own version control system, CI/CD engine, code review, project boards, and a 30+ command CLI — all wired together with a React frontend and an Express API.
+A full-stack code hosting platform built from scratch to understand how systems like GitHub work under the hood. Custom file-based VCS, real CI/CD pipeline execution, static code review with Myers diff, Kanban boards, Redis caching, GraphQL mutations, and 129 passing tests across 20 suites.
 
 ---
 

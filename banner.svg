@@ -78,30 +78,30 @@
   <text x="490" y="118" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="44" font-weight="800" fill="white" letter-spacing="-1.5">GitForge</text>
 
   <!-- Tagline -->
-  <text x="492" y="148" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#8a8a9a" letter-spacing="0.5">Distributed Version Control &amp; Automation Platform</text>
+  <text x="492" y="148" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#8a8a9a" letter-spacing="0.5">Code Hosting Platform with Custom VCS, CI/CD &amp; Code Review</text>
 
   <!-- Bottom accent line -->
   <rect x="300" y="175" width="600" height="2" rx="1" fill="url(#accent)" opacity="0.3"/>
 
   <!-- Feature pills row 1 -->
   <g font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">
-    <rect x="300" y="195" width="82" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="318" y="210" fill="#a78bfa">AI Reviews</text>
+    <rect x="300" y="195" width="96" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="313" y="210" fill="#a78bfa">Code Review</text>
 
-    <rect x="394" y="195" width="86" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="408" y="210" fill="#a78bfa">CI/CD Engine</text>
+    <rect x="408" y="195" width="86" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="422" y="210" fill="#a78bfa">CI Pipelines</text>
 
-    <rect x="492" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="506" y="210" fill="#a78bfa">GraphQL</text>
+    <rect x="506" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="520" y="210" fill="#a78bfa">GraphQL</text>
 
-    <rect x="576" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="588" y="210" fill="#a78bfa">30+ CLI</text>
+    <rect x="590" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="602" y="210" fill="#a78bfa">30+ CLI</text>
 
-    <rect x="660" y="195" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="674" y="210" fill="#a78bfa">Pull Requests</text>
+    <rect x="674" y="195" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="688" y="210" fill="#a78bfa">Pull Requests</text>
 
-    <rect x="772" y="195" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="785" y="210" fill="#a78bfa">Webhooks</text>
+    <rect x="786" y="195" width="86" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="796" y="210" fill="#a78bfa">Myers Diff</text>
   </g>
 
   <!-- Feature pills row 2 -->
@@ -109,20 +109,20 @@
     <rect x="300" y="225" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
     <text x="313" y="240" fill="#8b7fc7">Kanban Boards</text>
 
-    <rect x="412" y="225" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="424" y="240" fill="#8b7fc7">Analytics</text>
+    <rect x="412" y="225" width="82" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="423" y="240" fill="#8b7fc7">Redis Cache</text>
 
-    <rect x="496" y="225" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="508" y="240" fill="#8b7fc7">API Keys</text>
+    <rect x="506" y="225" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="518" y="240" fill="#8b7fc7">API Keys</text>
 
-    <rect x="580" y="225" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="593" y="240" fill="#8b7fc7">Real-time</text>
+    <rect x="590" y="225" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="603" y="240" fill="#8b7fc7">Real-time</text>
 
-    <rect x="670" y="225" width="80" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="683" y="240" fill="#8b7fc7">Audit Logs</text>
+    <rect x="680" y="225" width="80" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="693" y="240" fill="#8b7fc7">Audit Logs</text>
 
-    <rect x="762" y="225" width="88" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="773" y="240" fill="#8b7fc7">Diff Viewer</text>
+    <rect x="772" y="225" width="80" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="783" y="240" fill="#8b7fc7">129 Tests</text>
   </g>
 
   <!-- Top & bottom border lines -->
