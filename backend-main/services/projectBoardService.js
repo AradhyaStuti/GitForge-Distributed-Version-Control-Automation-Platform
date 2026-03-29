@@ -216,7 +216,7 @@ class ProjectBoardService {
     const [card] = fromColumn.cards.splice(cardIdx, 1);
     card.updatedAt = new Date();
 
-    const insertAt = newPosition != null ? newPosition : toColumn.cards.length;
+    const insertAt = newPosition !== null ? newPosition : toColumn.cards.length;
     toColumn.cards.splice(insertAt, 0, card);
 
     fromColumn.cards.forEach((c, i) => { c.position = i; });

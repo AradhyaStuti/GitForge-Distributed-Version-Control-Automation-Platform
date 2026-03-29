@@ -1,4 +1,4 @@
-const { body, param, query } = require("express-validator");
+const { body, query } = require("express-validator");
 const { handleValidation } = require("./validate");
 
 const VALID_SCOPES = [
