@@ -28,14 +28,14 @@ const mainRouter = express.Router();
 // ── API Docs ────────────────────────────────────────────────────────────────
 mainRouter.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customCss: ".swagger-ui .topbar { display: none }",
-  customSiteTitle: "GitForge API Docs",
+  customSiteTitle: "Gitless Forge API Docs",
 }));
 
 // ── Health ──────────────────────────────────────────────────────────────────
 mainRouter.get("/", (req, res) => {
   res.json({
     status: "ok",
-    message: "GitForge API is running.",
+    message: "Gitless Forge API is running.",
     version: "1.0.0",
     docs: "/api/v1/docs",
   });

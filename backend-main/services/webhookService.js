@@ -42,11 +42,11 @@ class WebhookService {
       const delivery = { event, payload, status: "pending" };
       try {
         const body = JSON.stringify({ event, payload, timestamp: new Date().toISOString() });
-        const headers = { "Content-Type": "application/json", "X-GitForge-Event": event };
+        const headers = { "Content-Type": "application/json", "X-GitlessForge-Event": event };
 
         if (wh.secret) {
           const sig = crypto.createHmac("sha256", wh.secret).update(body).digest("hex");
-          headers["X-GitForge-Signature"] = `sha256=${sig}`;
+          headers["X-GitlessForge-Signature"] = `sha256=${sig}`;
         }
 
         const controller = new AbortController();

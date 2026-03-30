@@ -201,7 +201,7 @@ function startServer() {
   process.on("SIGINT",  () => gracefulShutdown("SIGINT"));
 
   httpServer.listen(port, () => {
-    console.log(`GitForge API running on http://localhost:${port}`);
+    console.log(`Gitless Forge API running on http://localhost:${port}`);
     console.log(`Environment: ${config.nodeEnv}`);
     console.log(`GraphQL:     http://localhost:${port}/graphql`);
     console.log(`Metrics:     http://localhost:${port}/metrics`);

@@ -1,4 +1,4 @@
-# GitForge internals — don't track in real Git
+# Gitless Forge internals — don't track in real Git
 .gitforge/
 
 # Node

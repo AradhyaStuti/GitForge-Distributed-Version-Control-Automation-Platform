@@ -1,7 +1,7 @@
 {
   "name": "gitforge-backend",
   "version": "1.0.0",
-  "description": "GitForge - Distributed Version Control & Automation Platform API",
+  "description": "Gitless Forge - Distributed Version Control & Automation Platform API",
   "main": "index.js",
   "scripts": {
     "start": "node index.js start",

@@ -31,7 +31,7 @@ async function statusRepo() {
       console.log("\nNothing staged. Working tree clean.");
     }
   } catch (err) {
-    console.error("Not a GitForge repository. Run: init");
+    console.error("Not a Gitless Forge repository. Run: init");
   }
 }
 

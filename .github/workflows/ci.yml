@@ -1,4 +1,4 @@
-name: GitForge CI
+name: Gitless Forge CI
 on:
   push:
     branches: [main, develop]

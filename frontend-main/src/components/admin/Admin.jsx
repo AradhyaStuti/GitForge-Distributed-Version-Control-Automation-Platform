@@ -26,7 +26,7 @@ const Admin = () => {
   return (
     <div className="admin-page">
       <h1>Platform Analytics</h1>
-      <p className="admin-subtitle">Overview of GitForge platform metrics.</p>
+      <p className="admin-subtitle">Overview of Gitless Forge platform metrics.</p>
 
       <div className="admin-stats">
         {Object.entries(data.totals).map(([key, val]) => (

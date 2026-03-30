@@ -4,7 +4,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "GitForge API",
+      title: "Gitless Forge API",
       version: "1.0.0",
       description: "Distributed Version Control & Automation Platform API",
       license: { name: "MIT" },

@@ -63,7 +63,7 @@ const TrendingRepos = () => {
     <div className="tr-page">
       <div className="tr-header">
         <h1>Trending</h1>
-        <p className="tr-subtitle">Discover the most popular repositories on GitForge.</p>
+        <p className="tr-subtitle">Discover the most popular repositories on Gitless Forge.</p>
       </div>
 
       {/* Filters */}

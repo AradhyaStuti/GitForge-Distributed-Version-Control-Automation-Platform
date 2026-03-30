@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug in GitForge
+about: Report a bug in Gitless Forge
 labels: bug
 ---
 
@@ -22,4 +22,4 @@ labels: bug
 - OS:
 - Browser:
 - Node.js version:
-- GitForge version:
+- Gitless Forge version:

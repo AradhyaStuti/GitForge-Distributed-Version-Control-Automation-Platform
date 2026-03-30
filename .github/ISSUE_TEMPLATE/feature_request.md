@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a feature for GitForge
+about: Suggest a feature for Gitless Forge
 labels: enhancement
 ---
 

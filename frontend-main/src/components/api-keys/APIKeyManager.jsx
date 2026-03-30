@@ -223,7 +223,7 @@ const APIKeyManager = () => {
       {keys.length === 0 ? (
         <div className="ak-empty">
           <h3>No API keys</h3>
-          <p>Create a personal access token to authenticate with the GitForge API.</p>
+          <p>Create a personal access token to authenticate with the Gitless Forge API.</p>
         </div>
       ) : (
         <div className="ak-key-list">

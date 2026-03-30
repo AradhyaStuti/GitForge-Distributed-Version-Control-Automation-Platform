@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banner.svg" alt="GitForge" width="100%"/>
+  <img src="banner.svg" alt="Gitless Forge" width="100%"/>
 </p>
 
 <p align="center">
@@ -16,8 +16,8 @@ A full-stack code hosting platform built to learn how systems like GitHub work. 
 ## Quick Start
 
 ```bash
-git clone https://github.com/AradhyaStuti/GitForge-Distributed-Version-Control-Automation-Platform.git
-cd GitForge-Distributed-Version-Control-Automation-Platform
+git clone https://github.com/AradhyaStuti/Gitless Forge-Distributed-Version-Control-Automation-Platform.git
+cd Gitless Forge-Distributed-Version-Control-Automation-Platform
 
 cp backend-main/.env.example backend-main/.env
 # Fill in MONGODB_URI and JWT_SECRET_KEY

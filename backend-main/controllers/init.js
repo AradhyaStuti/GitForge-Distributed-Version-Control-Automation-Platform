@@ -32,7 +32,7 @@ async function initRepo() {
       JSON.stringify([], null, 2)
     );
 
-    console.log(`Initialized empty GitForge repository: ${repoPath}`);
+    console.log(`Initialized empty Gitless Forge repository: ${repoPath}`);
   } catch (err) {
     console.error("Error initialising repository:", err);
   }

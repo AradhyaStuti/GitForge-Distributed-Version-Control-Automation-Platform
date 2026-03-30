@@ -50,7 +50,7 @@ const Login = () => {
             <path d="M17 10 C17 10 17 28 17 30 C17 36 22 38 28 38 C34 38 39 36 39 30 C39 28 39 10 39 10" stroke="white" strokeWidth="5" strokeLinecap="round" fill="none" />
             <path d="M28 38 L28 46" stroke="white" strokeWidth="5" strokeLinecap="round" />
           </svg>
-          <span className="auth-logo-text">GitForge</span>
+          <span className="auth-logo-text">Gitless Forge</span>
         </div>
 
         <div className="auth-card">
@@ -109,7 +109,7 @@ const Login = () => {
         </div>
 
         <p className="auth-bottom-text">
-          {"By continuing, you agree to GitForge's Terms of Service."}
+          {"By continuing, you agree to Gitless Forge's Terms of Service."}
         </p>
       </div>
     </div>

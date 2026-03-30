@@ -27,7 +27,7 @@ const Explore = () => {
   return (
     <div className="explore-page">
       <div className="explore-hero">
-        <h1>Explore GitForge</h1>
+        <h1>Explore Gitless Forge</h1>
         <p>Discover repositories, snippets, and developers from the community.</p>
       </div>
 

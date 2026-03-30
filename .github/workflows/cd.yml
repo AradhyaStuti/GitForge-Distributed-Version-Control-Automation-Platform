@@ -1,4 +1,4 @@
-name: GitForge CD
+name: Gitless Forge CD
 on:
   push:
     tags: ['v*']

@@ -40,7 +40,7 @@ const Navbar = () => {
               <path d="M17 10 C17 10 17 28 17 30 C17 36 22 38 28 38 C34 38 39 36 39 30 C39 28 39 10 39 10" stroke="white" strokeWidth="5.5" strokeLinecap="round" fill="none" />
               <path d="M28 38 L28 46" stroke="white" strokeWidth="5.5" strokeLinecap="round" />
             </svg>
-            <span>GitForge</span>
+            <span>Gitless Forge</span>
           </Link>
 
           <form onSubmit={handleSearch} className="navbar-search" role="search">
