@@ -19,54 +19,38 @@
     </filter>
   </defs>
 
-  <!-- Background -->
   <rect width="1200" height="340" fill="url(#bg)"/>
 
-  <!-- Decorative grid dots -->
   <g opacity="0.06" fill="white">
     <circle cx="50" cy="50" r="1.2"/><circle cx="90" cy="50" r="1.2"/><circle cx="130" cy="50" r="1.2"/><circle cx="170" cy="50" r="1.2"/><circle cx="210" cy="50" r="1.2"/><circle cx="250" cy="50" r="1.2"/>
     <circle cx="50" cy="90" r="1.2"/><circle cx="90" cy="90" r="1.2"/><circle cx="130" cy="90" r="1.2"/><circle cx="170" cy="90" r="1.2"/><circle cx="210" cy="90" r="1.2"/><circle cx="250" cy="90" r="1.2"/>
     <circle cx="50" cy="130" r="1.2"/><circle cx="90" cy="130" r="1.2"/><circle cx="130" cy="130" r="1.2"/><circle cx="170" cy="130" r="1.2"/><circle cx="210" cy="130" r="1.2"/><circle cx="250" cy="130" r="1.2"/>
     <circle cx="50" cy="170" r="1.2"/><circle cx="90" cy="170" r="1.2"/><circle cx="130" cy="170" r="1.2"/><circle cx="170" cy="170" r="1.2"/><circle cx="210" cy="170" r="1.2"/><circle cx="250" cy="170" r="1.2"/>
     <circle cx="50" cy="210" r="1.2"/><circle cx="90" cy="210" r="1.2"/><circle cx="130" cy="210" r="1.2"/><circle cx="170" cy="210" r="1.2"/><circle cx="210" cy="210" r="1.2"/><circle cx="250" cy="210" r="1.2"/>
-    <circle cx="50" cy="250" r="1.2"/><circle cx="90" cy="250" r="1.2"/><circle cx="130" cy="250" r="1.2"/><circle cx="170" cy="250" r="1.2"/><circle cx="210" cy="250" r="1.2"/><circle cx="250" cy="250" r="1.2"/>
     <circle cx="950" cy="50" r="1.2"/><circle cx="990" cy="50" r="1.2"/><circle cx="1030" cy="50" r="1.2"/><circle cx="1070" cy="50" r="1.2"/><circle cx="1110" cy="50" r="1.2"/><circle cx="1150" cy="50" r="1.2"/>
     <circle cx="950" cy="90" r="1.2"/><circle cx="990" cy="90" r="1.2"/><circle cx="1030" cy="90" r="1.2"/><circle cx="1070" cy="90" r="1.2"/><circle cx="1110" cy="90" r="1.2"/><circle cx="1150" cy="90" r="1.2"/>
     <circle cx="950" cy="130" r="1.2"/><circle cx="990" cy="130" r="1.2"/><circle cx="1030" cy="130" r="1.2"/><circle cx="1070" cy="130" r="1.2"/><circle cx="1110" cy="130" r="1.2"/><circle cx="1150" cy="130" r="1.2"/>
     <circle cx="950" cy="170" r="1.2"/><circle cx="990" cy="170" r="1.2"/><circle cx="1030" cy="170" r="1.2"/><circle cx="1070" cy="170" r="1.2"/><circle cx="1110" cy="170" r="1.2"/><circle cx="1150" cy="170" r="1.2"/>
     <circle cx="950" cy="210" r="1.2"/><circle cx="990" cy="210" r="1.2"/><circle cx="1030" cy="210" r="1.2"/><circle cx="1070" cy="210" r="1.2"/><circle cx="1110" cy="210" r="1.2"/><circle cx="1150" cy="210" r="1.2"/>
-    <circle cx="950" cy="250" r="1.2"/><circle cx="990" cy="250" r="1.2"/><circle cx="1030" cy="250" r="1.2"/><circle cx="1070" cy="250" r="1.2"/><circle cx="1110" cy="250" r="1.2"/><circle cx="1150" cy="250" r="1.2"/>
   </g>
 
-  <!-- Glow orbs -->
   <circle cx="400" cy="140" r="200" fill="#7c3aed" opacity="0.07" filter="url(#blur1)"/>
   <circle cx="800" cy="180" r="160" fill="#6d28d9" opacity="0.05" filter="url(#blur1)"/>
 
-  <!-- Pipeline decoration (left side) -->
   <g opacity="0.12" stroke="#a78bfa" stroke-width="1.5" fill="none">
     <circle cx="80" cy="280" r="6"/><circle cx="140" cy="280" r="6"/><circle cx="200" cy="280" r="6"/><circle cx="260" cy="280" r="6"/>
-    <line x1="86" y1="280" x2="134" y2="280"/>
-    <line x1="146" y1="280" x2="194" y2="280"/>
-    <line x1="206" y1="280" x2="254" y2="280"/>
-    <circle cx="140" cy="280" r="3" fill="#22c55e"/>
-    <circle cx="200" cy="280" r="3" fill="#22c55e"/>
-    <circle cx="260" cy="280" r="3" fill="#3b82f6"/>
+    <line x1="86" y1="280" x2="134" y2="280"/><line x1="146" y1="280" x2="194" y2="280"/><line x1="206" y1="280" x2="254" y2="280"/>
+    <circle cx="140" cy="280" r="3" fill="#22c55e"/><circle cx="200" cy="280" r="3" fill="#22c55e"/><circle cx="260" cy="280" r="3" fill="#3b82f6"/>
   </g>
 
-  <!-- Git branch decoration (right side) -->
   <g opacity="0.1" stroke="#a78bfa" stroke-width="1.5" fill="none">
-    <line x1="1000" y1="280" x2="1000" y2="310"/>
-    <line x1="1000" y1="295" x2="1060" y2="280"/>
-    <line x1="1060" y1="280" x2="1060" y2="310"/>
-    <line x1="1060" y1="295" x2="1120" y2="310"/>
-    <circle cx="1000" cy="280" r="4" fill="#7c3aed"/>
-    <circle cx="1000" cy="310" r="4" fill="#7c3aed"/>
-    <circle cx="1060" cy="280" r="4" fill="#22c55e"/>
-    <circle cx="1060" cy="310" r="4" fill="#22c55e"/>
+    <line x1="1000" y1="280" x2="1000" y2="310"/><line x1="1000" y1="295" x2="1060" y2="280"/>
+    <line x1="1060" y1="280" x2="1060" y2="310"/><line x1="1060" y1="295" x2="1120" y2="310"/>
+    <circle cx="1000" cy="280" r="4" fill="#7c3aed"/><circle cx="1000" cy="310" r="4" fill="#7c3aed"/>
+    <circle cx="1060" cy="280" r="4" fill="#22c55e"/><circle cx="1060" cy="310" r="4" fill="#22c55e"/>
     <circle cx="1120" cy="310" r="4" fill="#f59e0b"/>
   </g>
 
-  <!-- Logo -->
   <g transform="translate(410, 75)">
     <rect width="60" height="60" rx="15" fill="#7c3aed"/>
     <rect width="60" height="60" rx="15" fill="url(#glow)"/>
@@ -74,58 +58,45 @@
     <path d="M30 39 L30 49" stroke="white" stroke-width="5" stroke-linecap="round"/>
   </g>
 
-  <!-- Title -->
   <text x="490" y="118" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="44" font-weight="800" fill="white" letter-spacing="-1.5">GitForge</text>
+  <text x="492" y="148" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#8a8a9a" letter-spacing="0.5">Code Hosting Platform with Custom VCS &amp; CI/CD</text>
 
-  <!-- Tagline -->
-  <text x="492" y="148" font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#8a8a9a" letter-spacing="0.5">Code Hosting Platform with Custom VCS, CI/CD &amp; Code Review</text>
-
-  <!-- Bottom accent line -->
   <rect x="300" y="175" width="600" height="2" rx="1" fill="url(#accent)" opacity="0.3"/>
 
-  <!-- Feature pills row 1 -->
   <g font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">
-    <rect x="300" y="195" width="96" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="313" y="210" fill="#a78bfa">Code Review</text>
+    <rect x="330" y="195" width="96" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="343" y="210" fill="#a78bfa">Code Review</text>
 
-    <rect x="408" y="195" width="86" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="422" y="210" fill="#a78bfa">CI Pipelines</text>
+    <rect x="438" y="195" width="86" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="452" y="210" fill="#a78bfa">CI Pipelines</text>
 
-    <rect x="506" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="520" y="210" fill="#a78bfa">GraphQL</text>
+    <rect x="536" y="195" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="550" y="210" fill="#a78bfa">Pull Requests</text>
 
-    <rect x="590" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="602" y="210" fill="#a78bfa">30+ CLI</text>
+    <rect x="648" y="195" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="662" y="210" fill="#a78bfa">GraphQL</text>
 
-    <rect x="674" y="195" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="688" y="210" fill="#a78bfa">Pull Requests</text>
-
-    <rect x="786" y="195" width="86" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
-    <text x="796" y="210" fill="#a78bfa">Myers Diff</text>
+    <rect x="732" y="195" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.15"/>
+    <text x="745" y="210" fill="#a78bfa">Webhooks</text>
   </g>
 
-  <!-- Feature pills row 2 -->
   <g font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" font-size="10.5" font-weight="600">
-    <rect x="300" y="225" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="313" y="240" fill="#8b7fc7">Kanban Boards</text>
+    <rect x="330" y="225" width="100" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="343" y="240" fill="#8b7fc7">Kanban Boards</text>
 
-    <rect x="412" y="225" width="82" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="423" y="240" fill="#8b7fc7">Redis Cache</text>
+    <rect x="442" y="225" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="454" y="240" fill="#8b7fc7">API Keys</text>
 
-    <rect x="506" y="225" width="72" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="518" y="240" fill="#8b7fc7">API Keys</text>
+    <rect x="526" y="225" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="539" y="240" fill="#8b7fc7">Real-time</text>
 
-    <rect x="590" y="225" width="78" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="603" y="240" fill="#8b7fc7">Real-time</text>
+    <rect x="616" y="225" width="80" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="629" y="240" fill="#8b7fc7">Audit Logs</text>
 
-    <rect x="680" y="225" width="80" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="693" y="240" fill="#8b7fc7">Audit Logs</text>
-
-    <rect x="772" y="225" width="80" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
-    <text x="783" y="240" fill="#8b7fc7">129 Tests</text>
+    <rect x="708" y="225" width="102" height="22" rx="11" fill="#7c3aed" opacity="0.1"/>
+    <text x="719" y="240" fill="#8b7fc7">Swagger Docs</text>
   </g>
 
-  <!-- Top & bottom border lines -->
   <rect x="0" y="0" width="1200" height="1" fill="url(#accent)" opacity="0.4"/>
   <rect x="0" y="339" width="1200" height="1" fill="url(#accent)" opacity="0.4"/>
 </svg>

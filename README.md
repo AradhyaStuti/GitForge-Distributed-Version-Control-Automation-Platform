@@ -7,10 +7,9 @@
   <img src="https://img.shields.io/badge/react-18-7c3aed?style=flat-square&logo=react&logoColor=white"/>
   <img src="https://img.shields.io/badge/mongodb-7c3aed?style=flat-square&logo=mongodb&logoColor=white"/>
   <img src="https://img.shields.io/badge/docker-ready-7c3aed?style=flat-square&logo=docker&logoColor=white"/>
-  <img src="https://img.shields.io/badge/CI-GitHub_Actions-7c3aed?style=flat-square&logo=githubactions&logoColor=white"/>
 </p>
 
-A full-stack code hosting platform built from scratch to understand how systems like GitHub work under the hood. Custom file-based VCS, real CI/CD pipeline execution, static code review with Myers diff, Kanban boards, Redis caching, GraphQL mutations, and 129 passing tests across 20 suites.
+A full-stack code hosting platform built to learn how systems like GitHub work. Custom file-based version control, CI/CD that executes real shell commands, regex-based code review, Kanban boards, and a React + Express stack.
 
 ---
 
@@ -35,27 +34,23 @@ Or with Docker: `docker compose up --build`
 
 ---
 
-## What's in it
+## Features
 
-**Custom VCS** — Not a git wrapper. Commits are stored as JSON metadata + file snapshots on disk under `.gitforge/`. Supports branching, merging, tagging, stash, reflog, blame, grep, cherry-pick, reset, and more through a 30+ command CLI.
+**Custom VCS** — Commits stored as JSON + file snapshots under `.gitforge/`. CLI supports init, add, commit, push, pull, branch, merge, checkout, log, diff, blame, stash, tag, cherry-pick, reset, and more (24 commands).
 
-**Repositories & Pull Requests** — Create repos (public/private), open PRs with source/target branches, review and merge them. Comment threads with emoji reactions. File browser with tree view.
+**Pull Requests** — Create PRs with source/target branches, review, merge. Comment threads with reactions.
 
-**Code Review** — Runs regex-based static analysis against real PR diffs (built using Myers diff algorithm against `.gitforge` branch tips). Catches security issues (eval, innerHTML, SQL injection, hardcoded secrets), performance anti-patterns, and style problems. Gives a 0-100 quality score.
+**Code Review** — Regex-based static analysis against real PR diffs (Myers diff algorithm). Detects eval(), innerHTML, SQL injection, hardcoded secrets, nested loops, sequential awaits. Quality score 0-100.
 
-**CI/CD Pipelines** — Multi-stage pipelines where each step actually runs shell commands via `child_process.execFile`. Real stdout/stderr capture, exit codes, per-step timeouts, env vars, `continueOnError`. Command validation blocks shell injection patterns.
+**CI/CD Pipelines** — Multi-stage pipelines. Each step runs via `child_process.execFile` with stdout/stderr capture, exit codes, timeouts, and env vars.
 
-**Project Boards** — Kanban boards with drag-and-drop, WIP limits, color-coded columns, card priorities, assignees, and due dates. Ships with default columns (Backlog, To Do, In Progress, In Review, Done).
+**Project Boards** — Kanban with drag-and-drop, WIP limits, card priorities, assignees, due dates.
 
-**Snippets** — Multi-file code sharing (like Gists) with starring and forking.
+**API** — 30 REST endpoints with Swagger docs + GraphQL (queries and mutations). JWT and API key auth.
 
-**API** — REST (60+ endpoints with Swagger docs) + GraphQL (queries and mutations) + Prometheus metrics. Dual auth: JWT tokens and scoped API keys.
+**Security** — bcrypt, account lockout, rate limiting, NoSQL injection prevention, XSS sanitization, Helmet, HMAC-SHA256 webhooks, audit logging, request tracing.
 
-**Security** — bcrypt (12 rounds), account lockout, rate limiting, NoSQL injection prevention, XSS sanitization, Helmet headers, HMAC-SHA256 webhooks with retry, audit logging (90-day TTL), request tracing via correlation IDs.
-
-**Real-time** — Socket.IO for live notifications across the app.
-
-**Analytics** — Repo-level contributor stats, language breakdown, platform-wide trending with time-decay scoring.
+**Other** — Snippets (like Gists), Socket.IO notifications, Redis cache with in-memory fallback, Prometheus metrics endpoint.
 
 ---
 
@@ -63,10 +58,10 @@ Or with Docker: `docker compose up --build`
 
 | | |
 |---|---|
-| **Frontend** | React 18, Vite 5, Primer CSS, Socket.IO Client |
-| **Backend** | Node.js, Express, Mongoose, Socket.IO, Yargs |
-| **Database** | MongoDB (18 collections, compound + text + TTL indexes), Redis (optional cache) |
-| **Testing** | Jest + Supertest (96 tests), Vitest + Testing Library (33 tests) |
+| **Frontend** | React 18, Vite, Primer CSS, Socket.IO Client |
+| **Backend** | Node.js, Express, Mongoose, Socket.IO |
+| **Database** | MongoDB, Redis (optional) |
+| **Testing** | Jest + Supertest, Vitest + Testing Library (37 tests) |
 | **DevOps** | Docker Compose, GitHub Actions, Nginx |
 
 ---
@@ -75,7 +70,6 @@ Or with Docker: `docker compose up --build`
 
 ```bash
 cd backend-main
-
 node index.js init
 node index.js add-all
 node index.js commit "initial commit"
@@ -86,7 +80,6 @@ node index.js checkout feature
 node index.js diff app.js
 node index.js merge feature
 node index.js tag v1.0
-node index.js stash && node index.js stash-pop
 ```
 
 Run `node index.js --help` for the full list.
@@ -95,40 +88,15 @@ Run `node index.js --help` for the full list.
 
 ## API
 
-Swagger docs at `/api/v1/docs`. A few highlights:
+Swagger docs at `/api/v1/docs`. GraphQL at `/graphql`.
 
 ```
-POST /signup                          POST /login
-POST /repo/create                     GET  /repo/all
-POST /pr/create                       POST /pr/:id/merge
-POST /pipeline                        POST /pipeline/:id/trigger
-POST /code-review                     GET  /code-review/pr/:prId
-POST /boards                          POST /boards/:id/columns/:colId/cards
-POST /api-keys                        GET  /audit/me
-```
-
-GraphQL at `/graphql` — supports both queries and mutations (signup, login, CRUD for repos/issues/PRs, merge).
-
-Prometheus metrics at `/metrics`.
-
----
-
-## Project Layout
-
-```
-backend-main/
-  controllers/     30 files (API + CLI controllers)
-  services/        20 files (business logic)
-  models/          18 Mongoose schemas
-  routes/          19 route files
-  middleware/      13 (auth, rate limiting, security, cache, tracing...)
-  __tests__/       12 test suites, 96 tests
-  index.js         server + GraphQL + CLI
-
-frontend-main/src/
-  components/      34 components across 18 directories
-  hooks/           6 custom hooks
-  __tests__/       8 test suites, 33 tests
+POST /signup              POST /login
+POST /repo/create         GET  /repo/all
+POST /pr/create           POST /pr/:id/merge
+POST /pipeline            POST /pipeline/:id/trigger
+POST /code-review         GET  /code-review/pr/:prId
+POST /boards              POST /api-keys
 ```
 
 ---
@@ -136,18 +104,16 @@ frontend-main/src/
 ## Testing
 
 ```bash
-cd backend-main && npm test       # 12 suites, 96 tests
-cd frontend-main && npm test      # 8 suites, 33 tests
+cd backend-main && npm test
+cd frontend-main && npm test
 ```
 
-Backend tests cover auth, repos, issues, search, snippets, webhooks, pipelines, code review, boards, API keys, and audit logs. Frontend tests cover login, signup, repo creation, snippet creation, search, dashboard, error boundaries, and hooks.
+37 integration and unit tests covering auth, repos, issues, PRs, pipelines, code review, boards, API keys, audit logs, search, snippets, and webhooks.
 
 ---
 
 ## Deployment
 
-**CI** runs lint, tests, build, and Docker verification on every push via GitHub Actions.
+**CI** runs lint, tests, and build on every push via GitHub Actions.
 
-**CD** deploys to Railway (staging on tag push, production via manual gate). Frontend auto-deploys on Vercel.
-
-**Docker Compose** runs 5 services: backend, frontend (nginx), MongoDB 7, Redis 7, and an Nginx reverse proxy.
+**Docker Compose** runs backend, frontend (nginx), MongoDB 7, Redis 7, and Nginx reverse proxy.

@@ -11,9 +11,7 @@ userRouter.post("/signup", authLimiter, signupRules, userController.signup);
 userRouter.post("/login", authLimiter, loginRules, userController.login);
 
 // Protected
-userRouter.get("/allUsers", authMiddleware, paginationRules, userController.getAllUsers);
 userRouter.get("/userProfile/:id", mongoIdParam, userController.getUserProfile);
 userRouter.put("/updateProfile/:id", authMiddleware, mongoIdParam, userController.updateUserProfile);
-userRouter.delete("/deleteProfile/:id", authMiddleware, mongoIdParam, userController.deleteUserProfile);
 
 module.exports = userRouter;

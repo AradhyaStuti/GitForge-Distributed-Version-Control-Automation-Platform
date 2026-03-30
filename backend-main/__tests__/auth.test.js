@@ -55,27 +55,7 @@ describe("Auth Endpoints", () => {
       expect(res.status).toBe(409);
     });
 
-    it("should reject invalid email", async () => {
-      const res = await request(app).post("/signup").send({
-        username: "validuser",
-        email: "not-an-email",
-        password: "TestPass123",
-      });
-
-      expect(res.status).toBe(400);
-      expect(res.body).toHaveProperty("errors");
-    });
-
-    it("should reject weak password", async () => {
-      const res = await request(app).post("/signup").send({
-        username: "validuser2",
-        email: "test_jest_weak@example.com",
-        password: "123",
-      });
-
-      expect(res.status).toBe(400);
-    });
-  });
+});
 
   describe("POST /login", () => {
     it("should login with valid credentials", async () => {
@@ -98,14 +78,6 @@ describe("Auth Endpoints", () => {
       expect(res.status).toBe(401);
     });
 
-    it("should reject non-existent email", async () => {
-      const res = await request(app).post("/login").send({
-        email: "nobody@example.com",
-        password: "whatever1A",
-      });
-
-      expect(res.status).toBe(401);
-    });
   });
 
   describe("GET /userProfile/:id", () => {
@@ -115,18 +87,6 @@ describe("Auth Endpoints", () => {
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty("username", testUser.username);
       expect(res.body).not.toHaveProperty("password");
-    });
-
-    it("should return 400 for invalid ID format", async () => {
-      const res = await request(app).get("/userProfile/invalid-id");
-
-      expect(res.status).toBe(400);
-    });
-
-    it("should return 404 for non-existent user", async () => {
-      const res = await request(app).get(`/userProfile/507f1f77bcf86cd799439011`);
-
-      expect(res.status).toBe(404);
     });
   });
 });

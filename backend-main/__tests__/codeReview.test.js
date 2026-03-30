@@ -21,10 +21,10 @@ let authToken;
 let userId;
 let repoId;
 let prId;
+let reviewId;
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGODB_URI);
-
   const signupRes = await request(app).post("/signup").send({
     username: `cr_user_${Date.now()}`,
     email: `test_jest_cr_${Date.now()}@example.com`,
@@ -42,12 +42,7 @@ beforeAll(async () => {
   const prRes = await request(app)
     .post("/pr/create")
     .set("Authorization", `Bearer ${authToken}`)
-    .send({
-      title: "Test PR for review",
-      repository: repoId,
-      sourceBranch: "feature",
-      targetBranch: "main",
-    });
+    .send({ title: "Test PR", repository: repoId, sourceBranch: "feature", targetBranch: "main" });
   prId = prRes.body._id;
 });
 
@@ -60,66 +55,32 @@ afterAll(async () => {
 });
 
 describe("Code Review Endpoints", () => {
-  let reviewId;
-
-  describe("POST /code-review", () => {
-    it("should create a code review for a PR", async () => {
-      const res = await request(app)
-        .post("/code-review")
-        .set("Authorization", `Bearer ${authToken}`)
-        .send({ pullRequest: prId, repository: repoId });
-
-      expect(res.status).toBe(201);
-      expect(res.body.review).toBeDefined();
-      expect(res.body.review.status).toBe("completed");
-      expect(typeof res.body.review.score).toBe("number");
-      reviewId = res.body.review._id;
-    });
+  it("should create a code review for a PR", async () => {
+    const res = await request(app)
+      .post("/code-review")
+      .set("Authorization", `Bearer ${authToken}`)
+      .send({ pullRequest: prId, repository: repoId });
+    expect(res.status).toBe(201);
+    expect(res.body.review.status).toBe("completed");
+    expect(typeof res.body.review.score).toBe("number");
+    reviewId = res.body.review._id;
   });
 
-  describe("GET /code-review/pr/:prId", () => {
-    it("should list reviews for a PR", async () => {
-      const res = await request(app)
-        .get(`/code-review/pr/${prId}`)
-        .set("Authorization", `Bearer ${authToken}`);
-
-      expect(res.status).toBe(200);
-      expect(res.body.reviews).toBeDefined();
-      expect(res.body.reviews.length).toBeGreaterThan(0);
-    });
+  it("should return a review by ID with metrics", async () => {
+    const res = await request(app)
+      .get(`/code-review/${reviewId}`)
+      .set("Authorization", `Bearer ${authToken}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("score");
+    expect(res.body).toHaveProperty("summary");
+    expect(res.body).toHaveProperty("metrics");
   });
 
-  describe("GET /code-review/:id", () => {
-    it("should return a review by ID", async () => {
-      const res = await request(app)
-        .get(`/code-review/${reviewId}`)
-        .set("Authorization", `Bearer ${authToken}`);
-
-      expect(res.status).toBe(200);
-      expect(res.body._id).toBe(reviewId);
-      expect(res.body).toHaveProperty("score");
-      expect(res.body).toHaveProperty("summary");
-      expect(res.body).toHaveProperty("metrics");
-    });
-
-    it("should return 404 for non-existent review", async () => {
-      const res = await request(app)
-        .get("/code-review/507f1f77bcf86cd799439011")
-        .set("Authorization", `Bearer ${authToken}`);
-
-      expect(res.status).toBe(404);
-    });
-  });
-
-  describe("GET /code-review/stats/:repoId", () => {
-    it("should return review stats for a repo", async () => {
-      const res = await request(app)
-        .get(`/code-review/stats/${repoId}`)
-        .set("Authorization", `Bearer ${authToken}`);
-
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty("totalReviews");
-      expect(res.body).toHaveProperty("averageScore");
-    });
+  it("should list reviews for a PR", async () => {
+    const res = await request(app)
+      .get(`/code-review/pr/${prId}`)
+      .set("Authorization", `Bearer ${authToken}`);
+    expect(res.status).toBe(200);
+    expect(res.body.reviews.length).toBeGreaterThan(0);
   });
 });

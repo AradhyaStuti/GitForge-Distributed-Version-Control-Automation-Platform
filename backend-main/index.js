@@ -19,242 +19,52 @@ const yargs      = require("yargs");
 const { hideBin } = require("yargs/helpers");
 
 // ── Controllers ──────────────────────────────────────────────────────────────
-const { initRepo }                                           = require("./controllers/init");
-const { addRepo }                                            = require("./controllers/add");
-const { commitRepo }                                         = require("./controllers/commit");
-const { pushRepo }                                           = require("./controllers/push");
-const { pullRepo }                                           = require("./controllers/pull");
-const { revertRepo }                                         = require("./controllers/revert");
-const { statusRepo }                                         = require("./controllers/status");
-const { logRepo, shortlogRepo, reflogRepo }                  = require("./controllers/log");
-const { diffRepo, showCommit }                               = require("./controllers/diff");
+const { initRepo }                                   = require("./controllers/init");
+const { addRepo }                                    = require("./controllers/add");
+const { commitRepo }                                 = require("./controllers/commit");
+const { pushRepo }                                   = require("./controllers/push");
+const { pullRepo }                                   = require("./controllers/pull");
+const { revertRepo }                                 = require("./controllers/revert");
+const { statusRepo }                                 = require("./controllers/status");
+const { logRepo, reflogRepo }                        = require("./controllers/log");
+const { diffRepo, showCommit }                       = require("./controllers/diff");
 const { listBranches, createBranch, deleteBranch,
-        renameBranch, checkoutBranch, mergeBranch }          = require("./controllers/branch");
-const { createTag, listTags, deleteTag, showTag }            = require("./controllers/tag");
-const { stashSave, stashPop, stashList, stashDrop }          = require("./controllers/stash");
-const { listRemotes, addRemote, removeRemote }               = require("./controllers/remote");
-const { setConfig, listConfig }                              = require("./controllers/config_cmd");
-const { addAll, rmFile, mvFile, cleanStaging, restoreFile }  = require("./controllers/fileops");
-const { resetRepo, cherryPickRepo, archiveRepo, describeRepo,
-        blameFile, grepRepo, fetchRepo, cloneRepo }           = require("./controllers/advanced");
+        checkoutBranch, mergeBranch }                = require("./controllers/branch");
+const { createTag, listTags }                        = require("./controllers/tag");
+const { stashSave, stashPop }                        = require("./controllers/stash");
+const { addAll }                                     = require("./controllers/fileops");
+const { resetRepo, blameFile, cloneRepo }            = require("./controllers/advanced");
 
 // ── CLI Commands ──────────────────────────────────────────────────────────────
 yargs(hideBin(process.argv))
   .usage("Usage: node index.js <command> [options]")
 
-  // ── Server ──────────────────────────────────────────────────────────────────
   .command("start", "Start the web server", {}, startServer)
 
-  // ── Core ────────────────────────────────────────────────────────────────────
   .command("init",   "Initialize a new repository",   {}, initRepo)
   .command("status", "Show staged files and branch",  {}, statusRepo)
-
-  .command(
-    "add <file>",
-    "Stage a specific file",
-    (y) => y.positional("file", { type: "string", describe: "File to stage" }),
-    (argv) => addRepo(argv.file)
-  )
-  .command("add-all", "Stage all files in the working directory (like git add .)", {}, addAll)
-
-  .command(
-    "commit <message>",
-    "Commit staged files",
-    (y) => y.positional("message", { type: "string", describe: "Commit message" }),
-    (argv) => commitRepo(argv.message)
-  )
-
-  // ── Remote sync ─────────────────────────────────────────────────────────────
-  .command("push",  "Push commits to MongoDB",                     {}, pushRepo)
-  .command("pull",  "Pull commits from MongoDB to working dir",    {}, pullRepo)
-  .command("fetch", "Download commits from MongoDB without apply", {}, fetchRepo)
-  .command(
-    "clone <repoName>",
-    "Clone a repository from MongoDB",
-    (y) => y.positional("repoName", { type: "string", describe: "Repository name in MongoDB" }),
-    (argv) => cloneRepo(argv.repoName)
-  )
-
-  // ── History ──────────────────────────────────────────────────────────────────
-  .command("log",      "Show full commit history",     {}, logRepo)
-  .command("shortlog", "Show summarized commit list",  {}, shortlogRepo)
-  .command("reflog",   "Show history of HEAD changes", {}, reflogRepo)
-
-  // ── Inspect ──────────────────────────────────────────────────────────────────
-  .command(
-    "show <commitID>",
-    "Show details and files of a commit",
-    (y) => y.positional("commitID", { type: "string" }),
-    (argv) => showCommit(argv.commitID)
-  )
-  .command(
-    "diff <file>",
-    "Diff staged version vs last committed version",
-    (y) => y.positional("file", { type: "string" }),
-    (argv) => diffRepo(argv.file)
-  )
-  .command(
-    "blame <file>",
-    "Show which commit last touched each line",
-    (y) => y.positional("file", { type: "string" }),
-    (argv) => blameFile(argv.file)
-  )
-  .command(
-    "grep <pattern>",
-    "Search across all committed files",
-    (y) => y.positional("pattern", { type: "string" }),
-    (argv) => grepRepo(argv.pattern)
-  )
-  .command("describe", "Describe current HEAD (nearest tag or branch+hash)", {}, describeRepo)
-
-  // ── Branch ───────────────────────────────────────────────────────────────────
-  .command("branch",  "List all branches",  {}, listBranches)
-  .command(
-    "branch-create <name>",
-    "Create a new branch",
-    (y) => y.positional("name", { type: "string" }),
-    (argv) => createBranch(argv.name)
-  )
-  .command(
-    "branch-delete <name>",
-    "Delete a branch",
-    (y) => y.positional("name", { type: "string" }),
-    (argv) => deleteBranch(argv.name)
-  )
-  .command(
-    "branch-rename <old> <new>",
-    "Rename a branch",
-    (y) => {
-      y.positional("old", { type: "string" });
-      y.positional("new", { type: "string" });
-    },
-    (argv) => renameBranch(argv.old, argv.new)
-  )
-  .command(
-    "checkout <branch>",
-    "Switch to a branch",
-    (y) => y.positional("branch", { type: "string" }),
-    (argv) => checkoutBranch(argv.branch)
-  )
-  .command(
-    "switch <branch>",
-    "Switch to a branch (alias for checkout)",
-    (y) => y.positional("branch", { type: "string" }),
-    (argv) => checkoutBranch(argv.branch)
-  )
-  .command(
-    "merge <branch>",
-    "Merge a branch into the current branch",
-    (y) => y.positional("branch", { type: "string" }),
-    (argv) => mergeBranch(argv.branch)
-  )
-
-  // ── Tags ─────────────────────────────────────────────────────────────────────
-  .command(
-    "tag <name>",
-    "Create a tag at the current HEAD commit",
-    (y) => y.positional("name", { type: "string" }),
-    (argv) => createTag(argv.name)
-  )
-  .command("tag-list",  "List all tags",  {}, listTags)
-  .command(
-    "tag-delete <name>",
-    "Delete a tag",
-    (y) => y.positional("name", { type: "string" }),
-    (argv) => deleteTag(argv.name)
-  )
-  .command(
-    "tag-show <name>",
-    "Show details of a tag",
-    (y) => y.positional("name", { type: "string" }),
-    (argv) => showTag(argv.name)
-  )
-
-  // ── Stash ────────────────────────────────────────────────────────────────────
-  .command("stash",      "Stash current staged files",       {}, stashSave)
-  .command("stash-pop",  "Restore and remove latest stash",  {}, stashPop)
-  .command("stash-list", "List all stash entries",           {}, stashList)
-  .command("stash-drop", "Drop the latest stash entry",      {}, stashDrop)
-
-  // ── Remotes ──────────────────────────────────────────────────────────────────
-  .command("remote",  "List configured remotes",  {}, listRemotes)
-  .command(
-    "remote-add <name> <url>",
-    "Add a remote",
-    (y) => {
-      y.positional("name", { type: "string" });
-      y.positional("url",  { type: "string" });
-    },
-    (argv) => addRemote(argv.name, argv.url)
-  )
-  .command(
-    "remote-remove <name>",
-    "Remove a remote",
-    (y) => y.positional("name", { type: "string" }),
-    (argv) => removeRemote(argv.name)
-  )
-
-  // ── Config ───────────────────────────────────────────────────────────────────
-  .command(
-    "config <key> <value>",
-    "Set a repository config value",
-    (y) => {
-      y.positional("key",   { type: "string" });
-      y.positional("value", { type: "string" });
-    },
-    (argv) => setConfig(argv.key, argv.value)
-  )
-  .command("config-list", "List all config values", {}, listConfig)
-
-  // ── File operations ───────────────────────────────────────────────────────────
-  .command(
-    "rm <file>",
-    "Remove a file from the staging area",
-    (y) => y.positional("file", { type: "string" }),
-    (argv) => rmFile(argv.file)
-  )
-  .command(
-    "mv <src> <dest>",
-    "Rename a staged file",
-    (y) => {
-      y.positional("src",  { type: "string" });
-      y.positional("dest", { type: "string" });
-    },
-    (argv) => mvFile(argv.src, argv.dest)
-  )
-  .command("clean", "Clear the staging area", {}, cleanStaging)
-  .command(
-    "restore <file>",
-    "Restore a file from the last commit to the working directory",
-    (y) => y.positional("file", { type: "string" }),
-    (argv) => restoreFile(argv.file)
-  )
-
-  // ── Advanced ──────────────────────────────────────────────────────────────────
-  .command(
-    "revert <commitID>",
-    "Restore working directory to a specific commit",
-    (y) => y.positional("commitID", { type: "string" }),
-    (argv) => revertRepo(argv.commitID)
-  )
-  .command(
-    "reset <commitID>",
-    "Hard reset HEAD and working directory to a commit",
-    (y) => y.positional("commitID", { type: "string" }),
-    (argv) => resetRepo(argv.commitID)
-  )
-  .command(
-    "cherry-pick <commitID>",
-    "Stage files from a specific commit",
-    (y) => y.positional("commitID", { type: "string" }),
-    (argv) => cherryPickRepo(argv.commitID)
-  )
-  .command(
-    "archive <commitID>",
-    "Export files of a commit to a local folder",
-    (y) => y.positional("commitID", { type: "string" }),
-    (argv) => archiveRepo(argv.commitID)
-  )
+  .command("add <file>", "Stage a file", (y) => y.positional("file", { type: "string" }), (argv) => addRepo(argv.file))
+  .command("add-all", "Stage all files", {}, addAll)
+  .command("commit <message>", "Commit staged files", (y) => y.positional("message", { type: "string" }), (argv) => commitRepo(argv.message))
+  .command("push",  "Push commits to MongoDB",   {}, pushRepo)
+  .command("pull",  "Pull commits from MongoDB",  {}, pullRepo)
+  .command("clone <repoName>", "Clone a repository from MongoDB", (y) => y.positional("repoName", { type: "string" }), (argv) => cloneRepo(argv.repoName))
+  .command("log",    "Show commit history",        {}, logRepo)
+  .command("reflog", "Show history of HEAD changes", {}, reflogRepo)
+  .command("show <commitID>", "Show commit details", (y) => y.positional("commitID", { type: "string" }), (argv) => showCommit(argv.commitID))
+  .command("diff <file>", "Diff staged vs committed", (y) => y.positional("file", { type: "string" }), (argv) => diffRepo(argv.file))
+  .command("blame <file>", "Show which commit touched each line", (y) => y.positional("file", { type: "string" }), (argv) => blameFile(argv.file))
+  .command("branch", "List branches", {}, listBranches)
+  .command("branch-create <name>", "Create a branch", (y) => y.positional("name", { type: "string" }), (argv) => createBranch(argv.name))
+  .command("branch-delete <name>", "Delete a branch", (y) => y.positional("name", { type: "string" }), (argv) => deleteBranch(argv.name))
+  .command("checkout <branch>", "Switch to a branch", (y) => y.positional("branch", { type: "string" }), (argv) => checkoutBranch(argv.branch))
+  .command("merge <branch>", "Merge a branch", (y) => y.positional("branch", { type: "string" }), (argv) => mergeBranch(argv.branch))
+  .command("tag <name>", "Create a tag", (y) => y.positional("name", { type: "string" }), (argv) => createTag(argv.name))
+  .command("tag-list", "List all tags", {}, listTags)
+  .command("stash", "Stash staged files", {}, stashSave)
+  .command("stash-pop", "Restore latest stash", {}, stashPop)
+  .command("revert <commitID>", "Restore to a commit", (y) => y.positional("commitID", { type: "string" }), (argv) => revertRepo(argv.commitID))
+  .command("reset <commitID>", "Hard reset to a commit", (y) => y.positional("commitID", { type: "string" }), (argv) => resetRepo(argv.commitID))
 
   .demandCommand(1, "Please provide a command. Run --help to see all commands.")
   .help()
