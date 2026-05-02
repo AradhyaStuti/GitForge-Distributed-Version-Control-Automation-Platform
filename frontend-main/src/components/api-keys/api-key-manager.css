@@ -1,0 +1,148 @@
+/* ── API Key Manager ─────────────────────────────────────── */
+.ak-page { max-width: 800px; margin: 0 auto; padding: 20px; }
+.ak-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px; gap: 12px; }
+.ak-loading p { font-size: 0.78rem; color: var(--color-text-secondary); }
+
+/* ── Header ─────────────────────────────────────────────── */
+.ak-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+.ak-header h1 { font-size: 1.1rem; font-weight: 600; }
+.ak-subtitle { font-size: 0.78rem; color: var(--color-text-secondary); margin-top: 2px; }
+
+/* ── Buttons ────────────────────────────────────────────── */
+.ak-create-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 7px 14px; font-size: 0.78rem; font-weight: 600;
+  color: white; background: var(--color-accent-brand); border: none;
+  border-radius: var(--radius-md, 8px); cursor: pointer; transition: all 0.15s;
+}
+.ak-create-btn:hover { background: var(--color-accent-brand-hover); }
+.ak-create-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.ak-cancel-btn {
+  padding: 7px 14px; font-size: 0.78rem; font-weight: 500;
+  color: var(--color-text-secondary); background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border); border-radius: var(--radius-md, 8px);
+  cursor: pointer; transition: all 0.15s;
+}
+.ak-cancel-btn:hover { background: var(--color-bg-elevated); }
+
+/* ── Revealed Key Banner ────────────────────────────────── */
+.ak-reveal-banner {
+  padding: 16px; margin-bottom: 16px;
+  background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-lg, 12px);
+}
+.ak-reveal-warning {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.78rem; color: #f59e0b; margin-bottom: 10px;
+}
+.ak-reveal-key-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.ak-reveal-key {
+  flex: 1; padding: 8px 12px; font-size: 0.72rem;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  background: var(--color-bg-primary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px); color: var(--color-text-primary);
+  word-break: break-all;
+}
+.ak-copy-btn {
+  padding: 6px 14px; font-size: 0.74rem; font-weight: 600;
+  background: var(--color-bg-tertiary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px); color: var(--color-text-primary);
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.ak-copy-btn:hover { background: var(--color-bg-elevated); }
+.ak-copied { color: #22c55e; border-color: #22c55e; }
+.ak-dismiss-btn {
+  padding: 4px 10px; font-size: 0.68rem;
+  background: transparent; border: none; color: var(--color-text-secondary);
+  cursor: pointer; text-decoration: underline;
+}
+
+/* ── Create Form ────────────────────────────────────────── */
+.ak-create-form {
+  padding: 16px; margin-bottom: 16px;
+  background: var(--color-bg-secondary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg, 12px);
+}
+.ak-create-form h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 14px; }
+.ak-field { margin-bottom: 14px; }
+.ak-field label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 4px; }
+.ak-input, .ak-select {
+  width: 100%; padding: 7px 10px; font-size: 0.78rem;
+  background: var(--color-bg-primary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px); color: var(--color-text-primary);
+  outline: none; transition: all 0.15s;
+}
+.ak-input:focus, .ak-select:focus { border-color: var(--color-accent-brand); box-shadow: 0 0 0 2px var(--color-accent-brand-soft); }
+.ak-input::placeholder { color: var(--color-text-tertiary, var(--color-text-secondary)); }
+
+/* ── Scopes Grid ────────────────────────────────────────── */
+.ak-scopes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.ak-scope-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px; font-size: 0.74rem;
+  background: var(--color-bg-primary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px); cursor: pointer; transition: all 0.15s;
+}
+.ak-scope-item:hover { border-color: var(--color-border-hover); }
+.ak-scope-active { border-color: var(--color-accent-brand); background: var(--color-accent-brand-soft); }
+.ak-scope-item input[type="checkbox"] { accent-color: var(--color-accent-brand); }
+
+.ak-form-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+/* ── Empty State ────────────────────────────────────────── */
+.ak-empty { text-align: center; padding: 40px; color: var(--color-text-secondary); }
+.ak-empty h3 { font-size: 0.9rem; color: var(--color-text-primary); margin-bottom: 4px; }
+.ak-empty p { font-size: 0.78rem; }
+
+/* ── Key List ───────────────────────────────────────────── */
+.ak-key-list { display: flex; flex-direction: column; gap: 8px; }
+.ak-key-card {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  padding: 14px 16px;
+  background: var(--color-bg-secondary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 8px); transition: all 0.15s;
+}
+.ak-key-card:hover { border-color: var(--color-border-hover); }
+.ak-key-info { min-width: 0; flex: 1; }
+.ak-key-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.ak-key-name { font-size: 0.82rem; font-weight: 600; }
+.ak-key-prefix { font-size: 0.65rem; font-family: monospace; color: var(--color-text-secondary); padding: 1px 6px; background: var(--color-bg-tertiary); border-radius: var(--radius-sm, 6px); }
+.ak-key-scopes { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.ak-scope-badge {
+  font-size: 0.55rem; font-weight: 600; padding: 2px 7px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--color-accent-brand-soft); color: var(--color-accent-brand);
+}
+.ak-key-meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.62rem; color: var(--color-text-tertiary, var(--color-text-secondary)); }
+
+/* ── Key Actions ────────────────────────────────────────── */
+.ak-key-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.ak-rotate-btn, .ak-revoke-btn {
+  padding: 5px 12px; font-size: 0.72rem; font-weight: 600;
+  border-radius: var(--radius-sm, 6px); cursor: pointer; transition: all 0.15s;
+}
+.ak-rotate-btn { background: var(--color-bg-tertiary); border: 1px solid var(--color-border); color: var(--color-text-primary); }
+.ak-rotate-btn:hover { background: var(--color-bg-elevated); }
+.ak-revoke-btn { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; }
+.ak-revoke-btn:hover { background: rgba(239, 68, 68, 0.2); }
+
+.ak-confirm-revoke { display: flex; align-items: center; gap: 6px; }
+.ak-confirm-text { font-size: 0.68rem; color: var(--color-text-secondary); white-space: nowrap; }
+.ak-revoke-confirm {
+  padding: 4px 10px; font-size: 0.68rem; font-weight: 600;
+  background: #ef4444; color: white; border: none;
+  border-radius: var(--radius-sm, 6px); cursor: pointer;
+}
+.ak-revoke-cancel {
+  padding: 4px 10px; font-size: 0.68rem;
+  background: var(--color-bg-tertiary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px); color: var(--color-text-secondary); cursor: pointer;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media screen and (max-width: 700px) {
+  .ak-header { flex-direction: column; gap: 8px; }
+  .ak-key-card { flex-direction: column; }
+  .ak-scopes-grid { grid-template-columns: 1fr; }
+  .ak-key-meta { flex-direction: column; gap: 4px; }
+}

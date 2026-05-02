@@ -1,0 +1,108 @@
+/* ── Markdown Renderer ───────────────────────────────────── */
+.md-renderer { font-size: 0.85rem; line-height: 1.7; color: var(--color-text-primary); word-wrap: break-word; }
+
+/* ── Headings ───────────────────────────────────────────── */
+.md-renderer .md-h1 { font-size: 1.5rem; font-weight: 700; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
+.md-renderer .md-h2 { font-size: 1.25rem; font-weight: 600; margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border); }
+.md-renderer .md-h3 { font-size: 1.1rem; font-weight: 600; margin: 18px 0 8px; }
+.md-renderer .md-h4 { font-size: 1rem; font-weight: 600; margin: 16px 0 6px; }
+.md-renderer .md-h5 { font-size: 0.9rem; font-weight: 600; margin: 14px 0 4px; }
+.md-renderer .md-h6 { font-size: 0.85rem; font-weight: 600; margin: 12px 0 4px; color: var(--color-text-secondary); }
+
+/* ── Paragraphs ─────────────────────────────────────────── */
+.md-renderer p { margin: 8px 0; }
+
+/* ── Bold/Italic/Strikethrough ──────────────────────────── */
+.md-renderer strong { font-weight: 700; }
+.md-renderer em { font-style: italic; }
+.md-renderer del { text-decoration: line-through; color: var(--color-text-secondary); }
+
+/* ── Links ──────────────────────────────────────────────── */
+.md-renderer .md-link { color: var(--color-text-link); text-decoration: none; }
+.md-renderer .md-link:hover { text-decoration: underline; }
+
+/* ── Images ─────────────────────────────────────────────── */
+.md-renderer .md-image { max-width: 100%; height: auto; border-radius: var(--radius-md, 8px); margin: 8px 0; }
+
+/* ── Code Blocks ────────────────────────────────────────── */
+.md-renderer .md-code-block {
+  position: relative; margin: 12px 0; border-radius: var(--radius-md, 8px);
+  overflow: hidden; border: 1px solid var(--color-border);
+}
+.md-renderer .md-code-lang {
+  position: absolute; top: 6px; right: 10px;
+  font-size: 0.58rem; font-weight: 600; color: var(--color-text-tertiary, var(--color-text-secondary));
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.md-renderer .md-code-block pre {
+  margin: 0; padding: 14px; font-size: 0.76rem; line-height: 1.5;
+  background: #0d0d14; color: #c8d6e5; overflow-x: auto;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+}
+[data-theme="light"] .md-renderer .md-code-block pre { background: #1e1e2e; color: #d4d4d4; }
+.md-renderer .md-code-block code { font-family: inherit; }
+
+/* ── Syntax Highlighting ────────────────────────────────── */
+.md-hl-keyword { color: #c792ea; }
+.md-hl-string { color: #c3e88d; }
+.md-hl-number { color: #f78c6c; }
+.md-hl-comment { color: #546e7a; font-style: italic; }
+[data-theme="light"] .md-hl-keyword { color: #af00db; }
+[data-theme="light"] .md-hl-string { color: #0a7e07; }
+[data-theme="light"] .md-hl-number { color: #098658; }
+[data-theme="light"] .md-hl-comment { color: #6a9955; }
+
+/* ── Inline Code ────────────────────────────────────────── */
+.md-renderer .md-inline-code {
+  padding: 2px 6px; font-size: 0.8em;
+  background: var(--color-bg-tertiary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px);
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  color: var(--color-accent-red);
+}
+
+/* ── Blockquotes ────────────────────────────────────────── */
+.md-renderer .md-blockquote {
+  margin: 10px 0; padding: 8px 16px;
+  border-left: 4px solid var(--color-accent-brand);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary); border-radius: 0 var(--radius-sm, 6px) var(--radius-sm, 6px) 0;
+}
+
+/* ── Lists ──────────────────────────────────────────────── */
+.md-renderer .md-ul, .md-renderer .md-ol {
+  margin: 8px 0; padding-left: 24px; list-style: none;
+}
+.md-renderer .md-li { position: relative; margin: 3px 0; }
+.md-renderer .md-li::before { content: "\2022"; position: absolute; left: -16px; color: var(--color-text-secondary); }
+.md-renderer .md-oli { margin: 3px 0; }
+.md-renderer .md-ol { counter-reset: md-counter; }
+.md-renderer .md-oli { counter-increment: md-counter; position: relative; }
+.md-renderer .md-oli::before { content: counter(md-counter) "."; position: absolute; left: -24px; color: var(--color-text-secondary); font-size: 0.85em; }
+
+/* ── Task Lists ─────────────────────────────────────────── */
+.md-renderer .md-task { display: flex; align-items: center; gap: 6px; margin: 3px 0; }
+.md-renderer .md-task input[type="checkbox"] {
+  width: 16px; height: 16px; accent-color: var(--color-accent-brand);
+  cursor: default; flex-shrink: 0;
+}
+.md-renderer .md-task-checked { color: var(--color-text-secondary); text-decoration: line-through; }
+
+/* ── Tables ─────────────────────────────────────────────── */
+.md-renderer .md-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.8rem; }
+.md-renderer .md-table th, .md-renderer .md-table td {
+  padding: 8px 12px; border: 1px solid var(--color-border); text-align: left;
+}
+.md-renderer .md-table th { background: var(--color-bg-tertiary); font-weight: 600; font-size: 0.75rem; }
+.md-renderer .md-table tbody tr:nth-child(even) { background: var(--color-bg-tertiary); }
+
+/* ── Horizontal Rule ────────────────────────────────────── */
+.md-renderer .md-hr { border: none; border-top: 1px solid var(--color-border); margin: 20px 0; }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media screen and (max-width: 700px) {
+  .md-renderer { font-size: 0.8rem; }
+  .md-renderer .md-h1 { font-size: 1.3rem; }
+  .md-renderer .md-h2 { font-size: 1.1rem; }
+  .md-renderer .md-table { font-size: 0.7rem; }
+}
