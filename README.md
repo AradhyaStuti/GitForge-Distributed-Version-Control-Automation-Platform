@@ -2,6 +2,8 @@
 
 A side project where I tried to build a GitHub-style platform from scratch — including my own version control instead of wrapping Git.
 
+> **Not a Git wrapper.** Not built on libgit2. Not shelling out to the `git` binary. The version control here is implemented from scratch — file snapshots, commit metadata, branch tips, the lot.
+
 It started because I wanted to understand what's actually happening when you run `git commit` or open a PR, so I built the pieces myself: file snapshots, branch state, a CI runner, code review, project boards.
 
 Not production software. It's a learning project that turned into something I keep adding to.
