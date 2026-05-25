@@ -88,4 +88,21 @@ async function authenticateAny(req, res, next) {
     .json({ status: "error", message: "Access denied. No valid token or API key provided." });
 }
 
-module.exports = { apiKeyAuth, authenticateAny };
+// scope check only applies to API-key auth. JWT requests (req.apiKey unset)
+// represent the human user themselves and bypass this gate.
+function requireScope(...required) {
+  return (req, res, next) => {
+    if (!req.apiKey) return next();
+    const granted = req.apiKey.scopes || [];
+    const ok = granted.includes("admin") || required.some((s) => granted.includes(s));
+    if (!ok) {
+      return res.status(403).json({
+        status: "error",
+        message: `API key missing required scope: ${required.join(" or ")}.`,
+      });
+    }
+    next();
+  };
+}
+
+module.exports = { apiKeyAuth, authenticateAny, requireScope };

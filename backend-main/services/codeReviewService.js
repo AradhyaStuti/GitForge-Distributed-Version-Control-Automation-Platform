@@ -180,7 +180,7 @@ class CodeReviewService {
     const review = await CodeReview.create({
       pullRequest: prId,
       repository: repoId,
-      reviewer: "ai",
+      reviewer: "static-analysis",
       status: "in_progress",
     });
 
@@ -338,8 +338,6 @@ class CodeReviewService {
         criticalIssues,
         estimatedDebt: issuesFound * 15,
         complexityScore: Math.min(100, linesAnalyzed / 2),
-        duplicateBlocks: 0,
-        testCoverage: null,
       },
     };
   }

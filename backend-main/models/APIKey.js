@@ -23,7 +23,6 @@ const APIKeySchema = new Schema(
           "pr:read",
           "pr:write",
           "user:read",
-          "webhook:manage",
           "admin",
           "pipeline:read",
           "pipeline:write",

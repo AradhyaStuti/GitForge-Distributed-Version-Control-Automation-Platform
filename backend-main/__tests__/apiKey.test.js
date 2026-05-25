@@ -1,38 +1,22 @@
 const request = require("supertest");
-const express = require("express");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-
-dotenv.config();
-
-const mainRouter = require("../routes/main.router");
-const { errorHandler } = require("../middleware/errorHandler");
+const { buildApp, connectDb, disconnectDb, signupTestUser } = require("./helpers/setup");
 const User = require("../models/userModel");
 const APIKey = require("../models/APIKey");
 
-const app = express();
-app.use(express.json());
-app.use("/", mainRouter);
-app.use(errorHandler);
-
+const app = buildApp();
 let authToken;
 let userId;
+let emailRegex;
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGODB_URI);
-  const signupRes = await request(app).post("/signup").send({
-    username: `ak_user_${Date.now()}`,
-    email: `test_jest_ak_${Date.now()}@example.com`,
-    password: "TestPass123",
-  });
-  authToken = signupRes.body.token;
-  userId = signupRes.body.userId;
+  await connectDb();
+  ({ authToken, userId, emailRegex } = await signupTestUser(app, "ak"));
 });
 
 afterAll(async () => {
   await APIKey.deleteMany({ owner: userId });
-  await User.deleteMany({ email: /^test_jest_ak_/ });
-  await mongoose.connection.close();
+  await User.deleteMany({ email: emailRegex });
+  await disconnectDb();
 });
 
 describe("API Key Endpoints", () => {

@@ -46,7 +46,7 @@ const CodeReviewPanel = ({ prId }) => {
       setScanning(true);
       const res = await api.post("/v1/code-review", { pullRequestId: prId });
       setReview(res.data);
-      toast.success("AI code review complete!");
+      toast.success("Code review complete!");
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to run code review.");
     } finally {
@@ -122,7 +122,7 @@ const CodeReviewPanel = ({ prId }) => {
             </svg>
           </div>
           <h3>Analyzing code...</h3>
-          <p>AI is reviewing your changes for issues and improvements.</p>
+          <p>Scanning your changes for issues and improvements.</p>
         </div>
       </div>
     );
@@ -136,9 +136,9 @@ const CodeReviewPanel = ({ prId }) => {
             <path d="M9 9a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z" />
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Z" />
           </svg>
-          <h3>No AI review yet</h3>
-          <p>Run an AI-powered code review to get actionable suggestions.</p>
-          <button className="cr-run-btn" onClick={handleRunReview}>Run AI Review</button>
+          <h3>No code review yet</h3>
+          <p>Run a static-analysis review to get actionable suggestions.</p>
+          <button className="cr-run-btn" onClick={handleRunReview}>Run Code Review</button>
         </div>
       </div>
     );

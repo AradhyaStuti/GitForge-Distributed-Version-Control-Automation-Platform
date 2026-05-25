@@ -9,7 +9,6 @@ const VALID_SCOPES = [
   "pr:read",
   "pr:write",
   "user:read",
-  "webhook:manage",
   "admin",
   "pipeline:read",
   "pipeline:write",

@@ -15,7 +15,6 @@ const { globalLimiter }  = require("./middleware/rateLimiter");
 const requestTracing     = require("./middleware/requestTracing");
 const { securityMiddleware } = require("./middleware/security");
 const compressionMiddleware  = require("./middleware/compression");
-const { metricsMiddleware, metricsEndpoint } = require("./config/metrics");
 
 const { initRepo }                                   = require("./controllers/init");
 const { addRepo }                                    = require("./controllers/add");
@@ -76,7 +75,6 @@ function startServer() {
   app.use(globalLimiter);
   app.use(...securityMiddleware);
   app.use(compressionMiddleware);
-  app.use(metricsMiddleware);
 
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true }));
@@ -101,8 +99,6 @@ function startServer() {
     app.use(requestLogger);
   }
 
-  app.get("/metrics", metricsEndpoint);
-
   app.use("/api/v1", mainRouter);
   app.use("/", mainRouter);
 
@@ -122,6 +118,10 @@ function startServer() {
   });
   app.set("io", io);
 
+  // realtime: server emits prCreated / prMerged / issueCreated / board:updated /
+  // codereview:* on user-scoped rooms. the web client currently only subscribes
+  // to pipelineUpdate (not yet emitted server-side); PR/issue/board listeners
+  // are not wired on the client. tracked as a follow-up.
   io.on("connection", (socket) => {
     socket.on("joinRoom", (userID) => socket.join(userID));
   });

@@ -5,9 +5,15 @@ const memoryCache = new Map();
 let redisClient = null;
 let redisReady = false;
 
+// Redis is listed as an optionalDependency. when REDIS_URL is unset OR the
+// package isn't installed OR the server is unreachable, we silently fall
+// back to the in-process Map below.
 async function initRedis() {
   const redisUrl = process.env.REDIS_URL;
-  if (!redisUrl) return;
+  if (!redisUrl) {
+    console.log("Cache: REDIS_URL not set, using in-memory cache.");
+    return;
+  }
 
   try {
     const { createClient } = require("redis");
@@ -16,15 +22,14 @@ async function initRedis() {
     redisClient.on("ready", () => { redisReady = true; });
     await redisClient.connect();
     redisReady = true;
-    console.log("Redis cache connected.");
-  } catch {
+    console.log("Cache: Redis connected.");
+  } catch (err) {
     redisClient = null;
     redisReady = false;
-    console.log("Redis unavailable, using in-memory cache.");
+    console.log(`Cache: Redis unavailable (${err.code || err.message}), using in-memory cache.`);
   }
 }
 
-// Initialize on load (non-blocking)
 initRedis();
 
 async function cacheGet(key) {

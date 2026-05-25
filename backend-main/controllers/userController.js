@@ -3,11 +3,14 @@ const { asyncHandler } = require("../middleware/errorHandler");
 
 const signup = asyncHandler(async (req, res) => {
   const result = await userService.createUser(req.body);
+  // expose userId so the audit-logger middleware (res.on("finish")) can record actor
+  req.userId = result.userId?.toString();
   res.status(201).json(result);
 });
 
 const login = asyncHandler(async (req, res) => {
   const result = await userService.authenticateUser(req.body);
+  req.userId = result.userId?.toString();
   res.json(result);
 });
 
